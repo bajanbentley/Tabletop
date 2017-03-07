@@ -1,0 +1,28 @@
+{
+  "name": "tabletop",
+  "version": "1.0.0",
+  "description": "tabletop simulator using MEAN",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node app"
+  },
+  "dependencies":{
+    "express":"*",
+    "mongoose":"*",
+    "bcryptjs":"*",
+    "cors":"*",
+    "body-parser":"*",
+    "passport": "*"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/andrew2chan/Tabletop.git"
+  },
+  "author": "CPS630 group",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/andrew2chan/Tabletop/issues"
+  },
+  "homepage": "https://github.com/andrew2chan/Tabletop#readme"
+}
