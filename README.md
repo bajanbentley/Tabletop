@@ -2,8 +2,8 @@
 <hr>
 # Install and run Instructions
 <ol>
-<li>Download NodeJS</li>
-<li>Download MongoDB</li>
+<li>Download <a href="https://nodejs.org/en/">NodeJS</a></li>
+<li>Download <a href="https://www.mongodb.com/">MongoDB</a></li>
 <li>Clone this repository where ever you like</li>
 <li>Open cmd and cd to the cloned repository</li>
 <li>Type 'npm install' without the single quotes</li>
