@@ -6,8 +6,11 @@
 <li>Download <a href="https://www.mongodb.com/">MongoDB</a></li>
 <li>Clone this repository where ever you like</li>
 <li>Open cmd and cd to the cloned repository</li>
-<li>Type 'npm install' without the single quotes</li>
-<li>Type 'npm install -g nodemon' without the single quotes</li>
-<li>run using 'npm start' without single quotes</li>
+<li>Type <code>npm install</code> into cmd</li>
+<li>run using <code>npm start</code> in cmd</li>
 <li>Open browser and go type 'localhost:3000' without single quotes</li>
 </ol>
+<hr>
+# Testing new code
+To test new code, simply stop the program using Ctrl+C. Then retype:
+<code>npm start</code>
