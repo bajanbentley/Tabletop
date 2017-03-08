@@ -10,10 +10,10 @@
 <li>run using <code>npm start</code> in cmd</li>
 <li>Open browser and go type 'localhost:3000' without single quotes</li>
 </ol>
-<hr>
 # Install and run Instructions (Linux)
 Beats me lol.
-Try puttin <code>sudo npm install</code> and <code>sudo npm start</code>
+Try putting <code>sudo npm install</code> and <code>sudo npm start</code>
+<hr>
 # Testing new code
 To test new code, simply stop the program using Ctrl+C. Then retype:
 <code>npm start</code>
