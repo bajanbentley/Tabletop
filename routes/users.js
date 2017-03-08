@@ -1,11 +1,11 @@
 const express = require('express');
 const router = express.Router();
 
-router.post('/register', function(req, res, next) {
+router.get('/register', function(req, res, next) {
   res.send('REGISTER');
 }); //register
 
-router.post('/authenticate', function(req, res, next) {
+router.get('/auth', function(req, res, next) {
   res.send('Authenticate');
 }); //authenticate
 
