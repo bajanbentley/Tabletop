@@ -1,6 +1,6 @@
 # Tabletop
 <hr>
-# Install and run Instructions
+# Install and run Instructions (Windows)
 <ol>
 <li>Download <a href="https://nodejs.org/en/">NodeJS</a></li>
 <li>Download <a href="https://www.mongodb.com/">MongoDB</a></li>
@@ -10,6 +10,9 @@
 <li>run using <code>npm start</code> in cmd</li>
 <li>Open browser and go type 'localhost:3000' without single quotes</li>
 </ol>
+# Install and run Instructions (Linux)
+Beats me lol.
+Try putting <code>sudo npm install</code> and <code>sudo npm start</code>
 <hr>
 # Testing new code
 To test new code, simply stop the program using Ctrl+C. Then retype:
