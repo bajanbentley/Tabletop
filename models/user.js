@@ -2,7 +2,7 @@ const mongoose = require('mongoose');
 const bcrypt = require('bcryptjs');
 
 //User schema
-const UserSchema = mongoose.Schema({
+const UserSchema = mongoose.Schema({ //how our schema should look
   name: {
     type: String
   },
@@ -20,7 +20,7 @@ const UserSchema = mongoose.Schema({
   }
 });
 
-const User = module.exports = mongoose.model('User', UserSchema);
+const User = module.exports = mongoose.model('User', UserSchema); //Allows for routes to make new user schema
 
 module.exports.getUserById = function(id, callback) {
   User.findById(id, callback);
