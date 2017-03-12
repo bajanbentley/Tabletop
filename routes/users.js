@@ -4,7 +4,7 @@ const passport = require('passport');
 const jwt = require('jsonwebtoken');
 const User = require('../models/user');
 
-router.post('/register', function(req, res, next) {
+router.post('/register', function(req, res, next) { //register the new user
   let newUser = new User({
     name: req.body.name,
     email: req.body.email,
@@ -12,9 +12,8 @@ router.post('/register', function(req, res, next) {
     password: req.body.password
   });
 
-  User.addUser(newUser, function(err, user){
+  User.addUser(newUser, function(err, user){ //tells us if adding user was successful
     if(err) {
-      console.log(err);
       res.json({success: false, msg:'Failed to register user'});
     }
     else {
