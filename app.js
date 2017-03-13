@@ -30,6 +30,12 @@ app.use(express.static(path.join(__dirname, "client")));
 //gets info from form and such
 app.use(bodyParser.json());
 
+//passport
+app.use(passport.initialize());
+app.use(passport.session());
+
+require('./config/passport')(passport);
+
 app.use('/users', users); //any domain that is ./users/x goes to x
 
 app.get('/', function(req, res) { //index route

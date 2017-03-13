@@ -23,11 +23,42 @@ router.post('/register', function(req, res, next) { //register the new user
 }); //register
 
 router.post('/auth', function(req, res, next) {
-  res.send('Authenticate');
+  const username = req.body.username;
+  const password = req.body.password;
+
+  User.getUserByUsername(username, function(err, user){ //get username
+    if(err) throw err;
+    if(!user) {
+      return res.json({success: false, msg: 'User not found'}); //if user exists
+    }
+
+    User.comparePassword(password, user.password, function(err, isMatch) { //if match password
+      if(err) throw err;
+      if(isMatch) {
+        const token = jwt.sign(user, 'dankmemes', { //options
+          expiresIn: 604800 //1 week
+        });
+
+        res.json({ //if match
+          success: true,
+          token: 'JWT '+token,
+          user: {
+            id: user._id,
+            name: user.name,
+            username: user.username,
+            email: user.email
+          }
+        });
+      }
+      else { //if no match
+          return res.json({success: false, msg: 'Wrong password'});
+      }
+    });
+  });
 }); //authenticate
 
-router.get('/profile', function(req, res, next) {
-  res.send('PROFILE');
+router.get('/profile', passport.authenticate('jwt', {session: false}), function(req, res, next) { //session: false lets you protect
+  res.json({user: req.user});
 }); //profile
 
 module.exports = router;
