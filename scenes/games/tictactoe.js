@@ -1,44 +1,25 @@
-function init(){
-  scene = new THREE.Scene();
-  camera = new THREE.PerspectiveCamera( 75, window.innerWidth / window.innerHeight, 0.1, 1000 );
-  camera.position.z = 5;
-
-  renderer = new THREE.WebGLRenderer();
-  renderer.setSize( window.innerWidth, window.innerHeight, false);
-  document.body.appendChild( renderer.domElement );
-}
-init();
 /************************************************************
 * Creates a new Game Board
 ************************************************************/
-board = new THREE.Group();
-scene.add(board);
+function game(){
+  var board = new THREE.Group();
 
-/************************************************************
-* adding gameobjects to the board
-************************************************************/
-var x1 = xPiece();
-board.add(x1);
-x1.position.set(-1,0,0);
+  var x1 = xPiece();
+  board.add(x1);
+  x1.position.set(-1,0,0);
 
-var o1 = oPiece();
-board.add(o1);
-o1.position.set(1,0,0);
+  var o1 = oPiece();
+  board.add(o1);
+  o1.position.set(1,0,0);
 
-
-/************************************************************
-* Main render function followed by animations
-************************************************************/
-function render() {
-	requestAnimationFrame( render );
-  animate();
-	renderer.render( scene, camera );
+  return board;
 }
-render();
 
-function animate(){
-  x1.rotation.y += 0.05;
-  o1.rotation.y += 0.05;
+/************************************************************
+* Called when ending the game, destroy game objects here
+************************************************************/
+function gameCleanUP(){
+
 }
 
 /************************************************************
@@ -47,7 +28,7 @@ function animate(){
 
 //returns a new x game object
 function xPiece(){
-  group = new THREE.Group();
+  var group = new THREE.Group();
   var geometry = new THREE.BoxGeometry( 0.25, 1, 0.1 );
   var material = new THREE.MeshBasicMaterial( { color: 0xffffff } );
 
