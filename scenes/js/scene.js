@@ -12,8 +12,10 @@ init();
 /************************************************************
 * adding game to the scene
 ************************************************************/
-var game = game();
-scene.add(game);
+function newGame(){
+  scene.add(game());
+}
+newGame();
 
 /************************************************************
 * Main render function followed by animations
@@ -26,10 +28,9 @@ render();
 
 
 /************************************************************
-* Creates a new Game
+* Ends the current Game
 ************************************************************/
-function refreshGame(){
+function endGame(){
   gameCleanUP();
   scene.remove(game);
-  scene.add(game);
 }
