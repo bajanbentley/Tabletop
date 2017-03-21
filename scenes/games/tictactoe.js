@@ -8,7 +8,7 @@ function game(){
   board.add(x1);
   x1.position.set(-1,0,0);
 
-  var o1 = oPiece();
+  o1 = oPiece();
   board.add(o1);
   o1.position.set(1,0,0);
 
@@ -24,6 +24,7 @@ function gameCleanUP(){
 
 function gameAnimations(){
   x1.rotation.y += 0.01;
+  o1.rotation.x += 0.01;
 }
 /************************************************************
 * GameObject constructors
