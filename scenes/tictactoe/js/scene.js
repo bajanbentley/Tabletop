@@ -8,16 +8,21 @@ function init(){
   document.body.appendChild( renderer.domElement );
 }
 init();
+/************************************************************
+* Creates a new Game Board
+************************************************************/
+board = new THREE.Group();
+scene.add(board);
 
 /************************************************************
-* adding gameobjects to the scene
+* adding gameobjects to the board
 ************************************************************/
 var x1 = xPiece();
-scene.add(x1);
+board.add(x1);
 x1.position.set(-1,0,0);
 
 var o1 = oPiece();
-scene.add(o1);
+board.add(o1);
 o1.position.set(1,0,0);
 
 
