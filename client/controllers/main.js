@@ -15,3 +15,15 @@ app.config(function($routeProvider) {
       templateUrl : "templates/register.htm"
     });
 });
+
+app.controller('register', function($scope) {
+  $scope.onRegisterSubmit = function() {
+    if(this.password != this.confirmPass) { alert("Passwords do not match"); return false; }
+    const user = {
+      name: this.name,
+      email: this.email,
+      username: this.username,
+      password: this.password
+    }
+  };
+});
