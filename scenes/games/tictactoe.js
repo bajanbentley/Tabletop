@@ -4,7 +4,7 @@
 function game(){
   var board = new THREE.Group();
 
-  var x1 = xPiece();
+  x1 = xPiece();
   board.add(x1);
   x1.position.set(-1,0,0);
 
@@ -22,6 +22,9 @@ function gameCleanUP(){
 
 }
 
+function gameAnimations(){
+  x1.rotation.y += 0.01;
+}
 /************************************************************
 * GameObject constructors
 ************************************************************/

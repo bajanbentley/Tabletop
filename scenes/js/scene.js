@@ -13,7 +13,9 @@ init();
 * adding game to the scene
 ************************************************************/
 function newGame(){
-  scene.add(game());
+  board = game();
+  scene.add(board);
+
 }
 newGame();
 
@@ -22,6 +24,7 @@ newGame();
 ************************************************************/
 function render() {
 	requestAnimationFrame( render );
+  gameAnimations();
 	renderer.render( scene, camera );
 }
 render();
@@ -33,4 +36,8 @@ render();
 function endGame(){
   gameCleanUP();
   scene.remove(game);
+}
+
+function animate(){
+  board.rotation.x += 0.01;
 }
