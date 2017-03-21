@@ -10,16 +10,11 @@
 //init();
 
 //game objects
+
 var cardGeometry = new THREE.BoxGeometry( 0.75, 1, 0 );
 var cardmaterial = new THREE.MeshBasicMaterial( { color: 0xffffff } );
 var card = new THREE.Mesh( cardGeometry, cardmaterial );
 scene.add( card );
-
-var textGeometry = new THREE.TextGeometry("water",12);
-var textmaterial = new THREE.MeshBasicMaterial( { color: 0x00ff00 } );
-var text = new THREE.Mesh( textGeometry,textmaterial );
-scene.add(text);
-
 
 
 //main render function
