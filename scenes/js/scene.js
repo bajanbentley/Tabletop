@@ -15,7 +15,7 @@ init();
 function newGame(){
   board = game();
   scene.add(board);
-
+  board.scale.set(0.25,0.25,0.25);
 }
 newGame();
 
@@ -24,6 +24,7 @@ newGame();
 ************************************************************/
 function render() {
 	requestAnimationFrame( render );
+  animate();
   gameAnimations();
 	renderer.render( scene, camera );
 }
@@ -39,5 +40,5 @@ function endGame(){
 }
 
 function animate(){
-  board.rotation.x += 0.01;
+  board.rotation.z += 0.01;
 }
