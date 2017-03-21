@@ -12,8 +12,10 @@
     "mongoose":"*",
     "bcryptjs":"*",
     "cors":"*",
+    "jsonwebtoken":"*",
     "body-parser":"*",
-    "passport": "*"
+    "passport": "*",
+    "passport-jwt":"*"
   },
   "repository": {
     "type": "git",
