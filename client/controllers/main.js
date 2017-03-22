@@ -44,7 +44,7 @@ app.controller('register', function($scope, $http, $timeout, $location, $timeout
   };
 });
 
-app.controller('login', function($scope, $http, $location) {
+app.controller('login', function($scope, $http, $location, loginAuth) {
   $scope.onLoginSubmit = function() {
       const user = {
         username: this.username,
@@ -55,6 +55,7 @@ app.controller('login', function($scope, $http, $location) {
       .then(
       function successCallback(data) {
         if(data.data.success) {
+          loginAuth.test();
           $scope.storeUserData(data.data.token, data.data.user);
           $location.path('/home');
         }
@@ -73,4 +74,11 @@ app.controller('login', function($scope, $http, $location) {
 
   };
 
+
+});
+
+app.service('loginAuth', function() {
+  this.test = function() {
+    console.log("test");
+  }
 });
