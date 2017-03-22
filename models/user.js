@@ -17,6 +17,12 @@ const UserSchema = mongoose.Schema({ //how our schema should look
   password: {
     type: String,
     required: true
+  },
+  wins: {
+    type: Number
+  },
+  loses: {
+    type: Number
   }
 });
 
