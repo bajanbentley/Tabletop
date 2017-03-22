@@ -9,7 +9,9 @@ router.post('/register', function(req, res, next) { //register the new user
     name: req.body.name,
     email: req.body.email,
     username: req.body.username,
-    password: req.body.password
+    password: req.body.password,
+    wins: 3,
+    loses: 3
   });
 
   User.addUser(newUser, function(err, user){ //tells us if adding user was successful
