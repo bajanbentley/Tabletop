@@ -61,3 +61,7 @@ input[type="submit"] {
 input[type="submit"]:hover {
   background-color: lightblue;
 }
+
+div.well {
+  box-shadow: 5px 5px 5px lightblue;
+}
