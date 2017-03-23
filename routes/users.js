@@ -10,8 +10,8 @@ router.post('/register', function(req, res, next) { //register the new user
     email: req.body.email,
     username: req.body.username,
     password: req.body.password,
-    wins: 3,
-    loses: 3
+    wins: 0,
+    loses: 0
   });
 
   User.addUser(newUser, function(err, user){ //tells us if adding user was successful
@@ -48,7 +48,9 @@ router.post('/auth', function(req, res, next) {
             id: user._id,
             name: user.name,
             username: user.username,
-            email: user.email
+            email: user.email,
+            wins: user.wins,
+            loses: user.loses
           }
         });
       }
