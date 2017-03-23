@@ -37,7 +37,8 @@ app.controller('register', function($scope, $http, $timeout, $location, $timeout
 
     $http.post('http://localhost:3000/users/register', user, {headers: {'Content-type': 'application/json'}})
     .then(
-      function successCallback() {
+      function successCallback(data) {
+        if(data.data.success == false) { document.getElementById("message").innerHTML = "Username/Email already in use."; return;}
         document.getElementById("message").innerHTML = "Registration successful! You will be redirected to the login page in 3 seconds."
         $timeout(function() {
           $location.path('/login');
