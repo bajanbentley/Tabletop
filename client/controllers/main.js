@@ -35,7 +35,7 @@ app.controller('register', function($scope, $http, $timeout, $location, $timeout
       password: this.password,
     }
 
-    $http.post('http://localhost:3000/users/register', user, {headers: {'Content-type': 'application/json'}})
+    $http.post('users/register', user, {headers: {'Content-type': 'application/json'}})
     .then(
       function successCallback(data) {
         if(data.data.success == false) { document.getElementById("message").innerHTML = "Username/Email already in use."; return;}
@@ -65,7 +65,7 @@ app.controller('login', function($scope, $http, $location, loginAuth, userInfo) 
         password: this.password,
       }
 
-      $http.post('http://localhost:3000/users/auth', user, {headers: {'Content-type': 'application/json'}})
+      $http.post('users/auth', user, {headers: {'Content-type': 'application/json'}})
       .then(
       function successCallback(data) {
         if(data.data.success) {
@@ -97,7 +97,7 @@ app.controller('login', function($scope, $http, $location, loginAuth, userInfo) 
 
   $scope.getProfile = function() {
     //console.log(userInfo.loadToken());
-    $http.get('http://localhost:3000/users/profile', {headers: {'Authorization': userInfo.loadToken()}})
+    $http.get('users/profile', {headers: {'Authorization': userInfo.loadToken()}})
     .then(
     function successCallback(data) {
         userInfo.setUserProfile(data.data.user);
