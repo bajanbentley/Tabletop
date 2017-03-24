@@ -10,11 +10,14 @@
 <li>run using <code>npm start</code> in cmd</li>
 <li>Open browser and go type 'localhost:3000' without single quotes</li>
 </ol>
+<br>
 # Install and run Instructions (Linux)
 Beats me lol.
 Try putting <code>sudo npm install</code> and <code>sudo npm start</code>
+<br>
 # Testing new code
 To test new code, simply stop the program using Ctrl+C. Then retype:
 <code>npm start</code>
+<br>
 # Heroku Application
 This is the <a href="https://tabletop-games.herokuapp.com/#/">demo</a> link for our website.
