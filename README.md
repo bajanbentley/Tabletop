@@ -13,7 +13,8 @@
 # Install and run Instructions (Linux)
 Beats me lol.
 Try putting <code>sudo npm install</code> and <code>sudo npm start</code>
-<hr>
 # Testing new code
 To test new code, simply stop the program using Ctrl+C. Then retype:
 <code>npm start</code>
+# Heroku Application
+This is the <a href="https://tabletop-games.herokuapp.com/#/">demo</a> link for our website.
