@@ -9,12 +9,11 @@ section.shrinktabs {
   width: 30%;
   overflow: hidden;
   border: 1px solid lightgrey;
-  position: absolute;
+  position: relative;
   left: 50%;
-  top: 50%;
-  -ms-transform: translate(-50%, -50%);
-  -webkit-transform: translate(-50%, -50%);
-  transform: translate(-50%, -50%);
+  -webkit-transform: translate(-50%, 0%);
+  -moz-transform: translate(-50%, 0%);
+  transform: translate(-50%, 0%);
   border-radius: 5px;
   font-family: 'Josefin Sans', sans-serif;
 }
@@ -61,4 +60,8 @@ input[type="submit"] {
 
 input[type="submit"]:hover {
   background-color: lightblue;
+}
+
+div.well {
+  box-shadow: 5px 5px 5px lightblue;
 }

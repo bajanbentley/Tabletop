@@ -19,7 +19,7 @@ const app = express(); //initialize app with express
 
 const users = require('./routes/users'); //gets users.js
 
-const port = 3000;
+const port = process.env.PORT || 8080;
 
 //lets you communicate with any domain
 app.use(cors());

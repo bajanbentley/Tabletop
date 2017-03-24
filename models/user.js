@@ -1,4 +1,5 @@
 const mongoose = require('mongoose');
+const uniqueValidator = require('mongoose-unique-validation');
 const bcrypt = require('bcryptjs');
 
 //User schema
@@ -8,17 +9,27 @@ const UserSchema = mongoose.Schema({ //how our schema should look
   },
   email: {
     type: String,
-    required: true
+    required: true,
+    unique: true
   },
   username: {
     type: String,
-    required: true
+    required: true,
+    unique: true
   },
   password: {
     type: String,
     required: true
+  },
+  wins: {
+    type: Number
+  },
+  loses: {
+    type: Number
   }
 });
+
+UserSchema.plugin(uniqueValidator);
 
 const User = module.exports = mongoose.model('User', UserSchema); //Allows for routes to make new user schema
 
