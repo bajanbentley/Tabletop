@@ -6,13 +6,13 @@
 
   <div class="tab-content">
     <div id="home" class="tab-pane fade in active">
-      <form name="form" ng-submit="onRegisterSubmit()">
+      <form name="myForm" ng-submit="onRegisterSubmit()">
         <input type="text" placeholder="Name" ng-model="name" name="name" required></input>
-        <input type="text" placeholder="Email" ng-model="email" name="email" required></input>
-        <span style="color:red" ng-show="form.email.$dirty && form.email.$invalid">
-          <span ng-show="form.email.$error.required">Email is required.</span>
-          <span ng-show="form.email.$error.email">Invalid email address.</span>
-        </span>
+		<input type="email" name="email" ng-model="email" placeholder="Email" required>
+		  <span style="color:red" ng-show="myForm.email.$dirty && myForm.email.$invalid">
+		  <span ng-show="myForm.email.$error.required">Email is required.</span>
+		  <span ng-show="myForm.email.$error.email">Invalid email address.</span>
+		 </span>
         <input type="text" placeholder="Username" ng-model="username" name="username" required></input>
         <input type="password" placeholder="Password" ng-model="password" name="password" required></input>
         <input type="password" placeholder="Retype password" ng-model="confirmPass" name="confirmPass" required></input>
