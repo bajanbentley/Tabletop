@@ -3,6 +3,10 @@ var app = angular.module("views", ["ngRoute"]);
 /**************************
 Routing
 ***************************/
+
+Physijs.scripts.worker = 'Physijs/physijs_worker.js';
+Physijs.scripts.ammo = '../Physijs/examples/js/ammo.js';
+
 app.config(function($routeProvider) {
     $routeProvider
     .when("/", {
@@ -142,12 +146,12 @@ app.controller('profile', function($scope, userInfo) {
 });
 
 app.controller('stacks', function($scope, $route) { //
-  Physijs.scripts.worker = 'Physijs/physijs_worker.js';
-  Physijs.scripts.ammo = '../Physijs/examples/js/ammo.js';
+
 
   var initScene, initEventHandling, render, renderer, scene, camera, box, table, table_material, block_material, light, blocks = [];
 
   initScene = function() {
+
       renderer = new THREE.WebGLRenderer({ antialias: true });
       renderer.setSize( window.innerWidth, window.innerHeight );
       document.getElementById( 'viewport' ).appendChild( renderer.domElement );
