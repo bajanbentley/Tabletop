@@ -1,5 +1,4 @@
 var app = angular.module("views", ["ngRoute"]);
-var workers = 1;
 /**************************
 Routing
 ***************************/
@@ -141,16 +140,18 @@ app.controller('profile', function($scope, userInfo) {
 });
 
 app.controller('stacks', function($scope, $route) { //
-
+  Physijs.scripts.worker = 'Physijs/physijs_worker.js';
+  Physijs.scripts.ammo = '../Physijs/examples/js/ammo.js';
+  
   var initScene, initEventHandling, render, renderer, scene, camera, box, table, table_material, block_material, light, blocks = [];
 
+  $scope.$on('$routeChangeStart', function() {
+    Physijs.scripts.worker.terminate();
+    Physijs.scripts.ammo.terminate();
+  });
+
   initScene = function() {
-      if(workers == 1) {
-        Physijs.scripts.worker = 'Physijs/physijs_worker.js';
-        Physijs.scripts.ammo = '../Physijs/examples/js/ammo.js';
-        workers++;
-        console.log(workers);
-      }
+
       renderer = new THREE.WebGLRenderer({ antialias: true });
       renderer.setSize( window.innerWidth, window.innerHeight );
       document.getElementById( 'viewport' ).appendChild( renderer.domElement );
