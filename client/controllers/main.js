@@ -19,6 +19,12 @@ app.config(function($routeProvider) {
     })
     .when("/profile", {
       templateUrl : "templates/profile.htm"
+    })
+    .when("/games", {
+      templateUrl : "templates/games.htm"
+    })
+    .when("/jenga", {
+      templateUrl : "templates/stacks.htm"
     });
 });
 
@@ -73,7 +79,7 @@ app.controller('login', function($scope, $http, $location, loginAuth, userInfo) 
           $scope.storeUserData(data.data.token, data.data.user);
           $scope.getProfile();
           loginAuth.setLogged(true);
-          $location.path('/home');
+          $location.path('/games');
         }
         else document.getElementById("message").innerHTML = "Username or password is incorrect";
       },
@@ -135,9 +141,13 @@ app.controller('profile', function($scope, userInfo) {
 
 });
 
-app.controller('stacks', function($scope) { //
+app.controller('stacks', function($scope, $route) { //
   Physijs.scripts.worker = 'Physijs/physijs_worker.js';
   Physijs.scripts.ammo = '../Physijs/examples/js/ammo.js';
+
+  $scope.$on('routeChangeSuccess', function() {
+    $route.reload();
+  });
 
   var initScene, initEventHandling, render, renderer, scene, camera, box, table, table_material, block_material, light, blocks = [];
 
@@ -235,7 +245,7 @@ app.controller('stacks', function($scope) { //
       vect.y = -(event.clientY / window.innerHeight) * 2 + 1;
       vect.z = 1;
 
-      raycaster.setFromCamera(vect, camera);
+      /*raycaster.setFromCamera(vect, camera);
       var intersects = raycaster.intersectObjects(scene.children);
       var box2 = new Physijs.BoxMesh(
           new THREE.CubeGeometry( 5, 5, 5 ),
@@ -244,7 +254,7 @@ app.controller('stacks', function($scope) { //
       box2.position.y = 7;
       box2.castShadow = true;
       box2.receiveShadow = true;
-      scene.add( box2 );
+      scene.add( box2 );*/
       //for ( var i = 0; i < intersects.length; i++ ) {
         //intersects[ 0 ].object.material.color.set( 0xff0000 );
 
@@ -286,8 +296,14 @@ app.controller('stacks', function($scope) { //
     }
   }
 
-  window.onload = initScene();
+  initScene();
 
+});
+
+app.controller('games', function($scope, $location) {
+  $scope.changeToJenga = function() {
+    $location.path('/stacks');
+  }
 });
 /*************************************************
 Services
