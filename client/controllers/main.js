@@ -23,7 +23,7 @@ app.config(function($routeProvider) {
     .when("/games", {
       templateUrl : "templates/games.htm"
     })
-    .when("/jenga", {
+    .when("/stacks", {
       templateUrl : "templates/stacks.htm"
     });
 });
