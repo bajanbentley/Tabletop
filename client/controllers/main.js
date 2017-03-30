@@ -52,7 +52,6 @@ app.controller('register', function($scope, $http, $timeout, $location, $timeout
         }, 3000);
       },
       function errorCallback(err) {
-        console.log(err);
         document.getElementById("message").innerHTML = "An error occurred while trying to create the account. Please try again later."
       }
     );
@@ -85,7 +84,6 @@ app.controller('login', function($scope, $http, $location, loginAuth, userInfo) 
         else document.getElementById("message").innerHTML = "Username or password is incorrect";
       },
       function errorCallback(err) {
-        console.log(err);
         document.getElementById("message").innerHTML = "An error occurred while trying to login. Please try again later."
       });
 
