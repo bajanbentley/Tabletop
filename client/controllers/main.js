@@ -145,10 +145,10 @@ app.controller('stacks', function($scope, $route) { //
 
   var initScene, initEventHandling, render, renderer, scene, camera, box, table, table_material, block_material, light, blocks = [];
 
-  $scope.$on('$routeChangeStart', function() {
-    Physijs.scripts.worker = null;
-    Physijs.scripts.ammo = null;
-  });
+  $scope.reload = function() {
+    console.log("test");
+    route.reload();
+  }
 
   initScene = function() {
 
