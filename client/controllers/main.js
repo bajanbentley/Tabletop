@@ -151,6 +151,7 @@ app.controller('stacks', function($scope, $route) { //
         Physijs.scripts.worker = 'Physijs/physijs_worker.js';
         Physijs.scripts.ammo = '../Physijs/examples/js/ammo.js';
         workers++;
+        console.log(workers);
       }
       renderer = new THREE.WebGLRenderer({ antialias: true });
       renderer.setSize( window.innerWidth, window.innerHeight );
