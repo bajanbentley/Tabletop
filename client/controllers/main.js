@@ -1,5 +1,5 @@
 var app = angular.module("views", ["ngRoute"]);
-
+var workers = 1;
 /**************************
 Routing
 ***************************/
@@ -143,7 +143,6 @@ app.controller('profile', function($scope, userInfo) {
 });
 
 app.controller('stacks', function($scope, $route) { //
-  var workers = 1;
 
   var initScene, initEventHandling, render, renderer, scene, camera, box, table, table_material, block_material, light, blocks = [];
 
