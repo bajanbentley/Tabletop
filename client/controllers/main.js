@@ -139,16 +139,10 @@ app.controller('profile', function($scope, userInfo) {
 
 });
 
-app.controller('stacks', function($scope, $route) { //
-  Physijs.scripts.worker = 'Physijs/physijs_worker.js';
-  Physijs.scripts.ammo = '../Physijs/examples/js/ammo.js';
+app.controller('stacks', function($scope, $route, $location) { //
+
 
   var initScene, initEventHandling, render, renderer, scene, camera, box, table, table_material, block_material, light, blocks = [];
-
-  $scope.reload = function() {
-    console.log("test");
-    $route.reload();
-  }
 
   initScene = function() {
 
@@ -296,7 +290,7 @@ app.controller('stacks', function($scope, $route) { //
     }
   }
 
-  initScene();
+  window.onload = initScene();
 
 });
 
