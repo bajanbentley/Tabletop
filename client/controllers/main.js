@@ -147,7 +147,7 @@ app.controller('stacks', function($scope, $route) { //
 
   $scope.reload = function() {
     console.log("test");
-    route.reload();
+    $route.reload();
   }
 
   initScene = function() {
