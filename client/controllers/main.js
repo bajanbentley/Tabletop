@@ -148,7 +148,7 @@ app.controller('games', function($scope, $location) {
 app.controller('four', function($scope) {
   var initScene = function() {
     var scene, camera, renderer;
-    var geometry, material, mesh;
+    var geometry, material, mesh, table;
 
     init();
     animate();
@@ -162,11 +162,11 @@ app.controller('four', function($scope) {
     	camera.position.z = 1000;
 
       loader.load('images/wood4.png', function ( texture ) {
-        geometry = new THREE.BoxGeometry( 200, 200, 200 );
+        geometry = new THREE.BoxGeometry( 1000, 200, 200 );
         material = new THREE.MeshBasicMaterial( { map: texture } );
 
-        mesh = new THREE.Mesh( geometry, material );
-        scene.add( mesh );
+        table = new THREE.Mesh( geometry, material );
+        scene.add( table );
       });
 
       geometry = new THREE.BoxGeometry( 200, 200, 200 );
@@ -186,6 +186,8 @@ app.controller('four', function($scope) {
 
     	requestAnimationFrame( animate );
 
+      table.position.y = 0;
+      mesh.position.y = 5;
     	mesh.rotation.x += 0.01;
     	mesh.rotation.y += 0.02;
 
