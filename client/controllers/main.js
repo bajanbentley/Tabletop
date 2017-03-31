@@ -161,31 +161,19 @@ app.controller('four', function($scope) {
     	camera = new THREE.PerspectiveCamera( 75, window.innerWidth / window.innerHeight, 1, 10000 );
     	camera.position.z = 1000;
 
-      loader.load(
-      	// resource URL
-      	'../images/wood4.png',
-      	// Function when resource is loaded
-      	function ( texture ) {
-      		// do something with the texture
-      		material = new THREE.MeshBasicMaterial( {
+      loader.load('images/wood4.png', function ( texture ) {
+        geometry = new THREE.BoxGeometry( 200, 200, 200 );
+        material = new THREE.MeshBasicMaterial( { map: texture } );
+
+        mesh = new THREE.Mesh( geometry, material );
+        scene.add( mesh );
+      		/*material = new THREE.MeshBasicMaterial( {
       			map: texture
-      		 } );
-      	},
-      	// Function called when download progresses
-      	function ( xhr ) {
-      		console.log( (xhr.loaded / xhr.total * 100) + '% loaded' );
-      	},
-      	// Function called when download errors
-      	function ( xhr ) {
-      		console.log( 'An error happened' );
-      	}
-      );
 
-    	geometry = new THREE.BoxGeometry( 200, 200, 200 );
-    	//material = new THREE.MeshPhongMaterial( { map: THREE.ImageUtils.loadTexture('images/wood4.png') } );
+          } );*/
+      	});
 
-    	mesh = new THREE.Mesh( geometry, material );
-    	scene.add( mesh );
+
 
     	renderer = new THREE.WebGLRenderer();
     	renderer.setSize( window.innerWidth, window.innerHeight );
