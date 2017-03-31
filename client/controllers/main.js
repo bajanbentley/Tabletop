@@ -163,7 +163,7 @@ app.controller('four', function($scope) {
 
       loader.load(
       	// resource URL
-      	'images/wood4.png',
+      	'../images/wood4.png',
       	// Function when resource is loaded
       	function ( texture ) {
       		// do something with the texture
