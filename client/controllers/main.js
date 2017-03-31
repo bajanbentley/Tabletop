@@ -166,6 +166,8 @@ app.controller('four', function($scope) {
         material = new THREE.MeshBasicMaterial( { map: texture } );
 
         table = new THREE.Mesh( geometry, material );
+        table.position.y = 0;
+        table.rotation.z = 45;
         scene.add( table );
       });
 
@@ -173,6 +175,7 @@ app.controller('four', function($scope) {
     	material = new THREE.MeshBasicMaterial( { color: 0xff0000, wireframe: true } );
 
     	mesh = new THREE.Mesh( geometry, material );
+      mesh.position.y = 5;
     	scene.add( mesh );
 
     	renderer = new THREE.WebGLRenderer();
@@ -186,8 +189,6 @@ app.controller('four', function($scope) {
 
     	requestAnimationFrame( animate );
 
-      table.position.y = 0;
-      mesh.position.y = 5;
     	mesh.rotation.x += 0.01;
     	mesh.rotation.y += 0.02;
 
