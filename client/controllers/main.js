@@ -140,8 +140,8 @@ app.controller('profile', function($scope, userInfo) {
 });
 
 app.controller('games', function($scope, $location) {
-  $scope.changeTo = function() {
-    //$location.path("/four");
+  $scope.changeToFour = function() {
+    $location.path("/four");
   }
 });
 
