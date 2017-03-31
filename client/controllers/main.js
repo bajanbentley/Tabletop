@@ -169,7 +169,7 @@ app.controller('four', function($scope) {
     	renderer = new THREE.WebGLRenderer();
     	renderer.setSize( window.innerWidth, window.innerHeight );
 
-    	document.body.appendChild( renderer.domElement );
+    	document.getElementById("four").appendChild( renderer.domElement );
 
     }
 
