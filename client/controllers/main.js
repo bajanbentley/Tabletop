@@ -20,6 +20,9 @@ app.config(function($routeProvider) {
     .when("/profile", {
       templateUrl : "templates/profile.htm"
     })
+    .when("/four", {
+      templateUrl : "templates/four.htm"
+    })
     .when("/games", {
       templateUrl : "templates/games.htm"
     });
@@ -138,7 +141,7 @@ app.controller('profile', function($scope, userInfo) {
 
 app.controller('games', function($scope, $location) {
   $scope.changeTo = function() {
-
+    $location.path("/four");
   }
 });
 /*************************************************
