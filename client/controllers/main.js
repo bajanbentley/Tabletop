@@ -162,7 +162,7 @@ app.controller('four', function($scope) {
     	camera.position.z = 1500;
 
       loader.load('images/wood4.png', function ( texture ) {
-        geometry = new THREE.BoxGeometry( 1000, 50, 1000 );
+        geometry = new THREE.BoxGeometry( 1500, 50, 1500 );
         material = new THREE.MeshBasicMaterial( { map: texture } );
 
         table = new THREE.Mesh( geometry, material );
