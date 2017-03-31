@@ -168,6 +168,15 @@ app.controller('four', function($scope) {
         table = new THREE.Mesh( geometry, material );
         table.position.y = -200;
         scene.add( table );
+
+        geometry = new THREE.BoxGeometry( 1000, 50, 1000 );
+        material = new THREE.MeshBasicMaterial( { map: texture } );
+
+        table = new THREE.Mesh( geometry, material );
+        table.rotation.z = Math.PI / 2;
+        table.position.y = -200;
+        table.position.x = -100;
+        scene.add(table);
       });
 
       geometry = new THREE.BoxGeometry( 200, 200, 200 );
