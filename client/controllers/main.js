@@ -184,6 +184,8 @@ app.controller('four', function($scope) {
 
     }
   }
+
+  window.onload = initScene();
 });
 /*************************************************
 Services
