@@ -159,14 +159,14 @@ app.controller('four', function($scope) {
       var loader = new THREE.TextureLoader();
 
     	camera = new THREE.PerspectiveCamera( 75, window.innerWidth / window.innerHeight, 1, 10000 );
-    	camera.position.z = 10000;
+    	camera.position.z = 2000;
 
       loader.load('images/wood4.png', function ( texture ) {
         geometry = new THREE.BoxGeometry( 500, 50, 500 );
         material = new THREE.MeshBasicMaterial( { map: texture } );
 
         table = new THREE.Mesh( geometry, material );
-        table.position.y = -0.5;
+        table.position.y = -5;
         scene.add( table );
       });
 
