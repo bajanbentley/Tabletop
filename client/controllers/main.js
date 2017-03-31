@@ -158,10 +158,8 @@ app.controller('four', function($scope) {
     	scene = new THREE.Scene();
       var loader = new THREE.TextureLoader();
 
-    	camera = new THREE.PerspectiveCamera( 35, window.innerWidth / window.innerHeight, 1, 10000 );
-      camera.position.set( 25, 20, 25 );
-  		camera.lookAt(new THREE.Vector3( 0, 7, 0 ));
-  		scene.add( camera );
+    	camera = new THREE.PerspectiveCamera( 75, window.innerWidth / window.innerHeight, 1, 10000 );
+    	camera.position.z = 10000;
 
       loader.load('images/wood4.png', function ( texture ) {
         geometry = new THREE.BoxGeometry( 500, 50, 500 );
@@ -176,6 +174,7 @@ app.controller('four', function($scope) {
     	material = new THREE.MeshBasicMaterial( { color: 0xff0000, wireframe: true } );
 
     	mesh = new THREE.Mesh( geometry, material );
+      mesh.position.y = 5;
     	scene.add( mesh );
 
     	renderer = new THREE.WebGLRenderer();
