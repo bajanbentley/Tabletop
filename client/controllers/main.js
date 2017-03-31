@@ -156,7 +156,7 @@ app.controller('four', function($scope) {
     function init() {
 
     	scene = new THREE.Scene();
-      var textureLoader = new THREE.TextureLoader();
+      var loader = new THREE.TextureLoader();
 
     	camera = new THREE.PerspectiveCamera( 75, window.innerWidth / window.innerHeight, 1, 10000 );
     	camera.position.z = 1000;
