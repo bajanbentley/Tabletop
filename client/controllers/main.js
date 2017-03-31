@@ -167,7 +167,7 @@ app.controller('four', function($scope) {
       	// Function when resource is loaded
       	function ( texture ) {
       		// do something with the texture
-      		var material = new THREE.MeshBasicMaterial( {
+      		material = new THREE.MeshBasicMaterial( {
       			map: texture
       		 } );
       	},
