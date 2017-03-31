@@ -156,27 +156,12 @@ app.controller('four', function($scope) {
     function init() {
 
     	scene = new THREE.Scene();
-      var loader = new THREE.TextureLoader();
-
-      loader.load(
-        'images/wood4.png',
-        function(texture) {
-          material = new THREE.MeshBasicMaterial( {map: texture} );
-        },
-        function ( xhr ) {
-          console.log( (xhr.loaded / xhr.total * 100) + '% loaded' );
-        },
-        // Function called when download errors
-        function ( xhr ) {
-          console.log( 'An error happened' );
-        }
-      );
 
     	camera = new THREE.PerspectiveCamera( 75, window.innerWidth / window.innerHeight, 1, 10000 );
     	camera.position.z = 1000;
 
     	geometry = new THREE.BoxGeometry( 200, 200, 200 );
-    	//material = new THREE.MeshBasicMaterial( { color: 0xff0000, wireframe: true } );
+    	material = new THREE.MeshPhongMaterial( { map: THREE.ImageUtils.loadTexture('images/wood4.png') } );
 
     	mesh = new THREE.Mesh( geometry, material );
     	scene.add( mesh );
