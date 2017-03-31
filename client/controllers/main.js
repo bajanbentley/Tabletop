@@ -161,13 +161,13 @@ app.controller('four', function($scope) {
     	camera = new THREE.PerspectiveCamera( 75, window.innerWidth / window.innerHeight, 1, 10000 );
     	camera.position.z = 1000;
 
-      /*loader.load('images/wood4.png', function ( texture ) {
+      loader.load('images/wood4.png', function ( texture ) {
         geometry = new THREE.BoxGeometry( 200, 200, 200 );
         material = new THREE.MeshBasicMaterial( { map: texture } );
 
         mesh = new THREE.Mesh( geometry, material );
         scene.add( mesh );
-      });*/
+      });
 
       geometry = new THREE.BoxGeometry( 200, 200, 200 );
     	material = new THREE.MeshBasicMaterial( { color: 0xff0000, wireframe: true } );
