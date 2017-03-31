@@ -166,7 +166,7 @@ app.controller('four', function($scope) {
         material = new THREE.MeshBasicMaterial( { map: texture } );
 
         table = new THREE.Mesh( geometry, material );
-        table.position.y = -5;
+        table.position.y = -100;
         scene.add( table );
       });
 
@@ -188,6 +188,8 @@ app.controller('four', function($scope) {
 
     	requestAnimationFrame( animate );
 
+      table.rotation.x += 0.01;
+    	table.rotation.y += 0.02;
     	mesh.rotation.x += 0.01;
     	mesh.rotation.y += 0.02;
 
