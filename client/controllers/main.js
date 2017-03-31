@@ -146,7 +146,7 @@ app.controller('games', function($scope, $location) {
 });
 
 app.controller('four', function($scope) {
-  $scope.initScene = function() {
+  var initScene = function() {
     var scene, camera, renderer;
     var geometry, material, mesh;
 
