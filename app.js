@@ -19,7 +19,7 @@ const app = express(); //initialize app with express
 
 const users = require('./routes/users'); //gets users.js
 
-const port = 3000;
+const port = process.env.PORT || 8080;
 
 //lets you communicate with any domain
 app.use(cors());
@@ -29,6 +29,12 @@ app.use(express.static(path.join(__dirname, "client")));
 
 //gets info from form and such
 app.use(bodyParser.json());
+
+//passport
+app.use(passport.initialize());
+app.use(passport.session());
+
+require('./config/passport')(passport);
 
 app.use('/users', users); //any domain that is ./users/x goes to x
 

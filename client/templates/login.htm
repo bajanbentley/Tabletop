@@ -1,0 +1,17 @@
+<section class="shrinktabs" ng-controller="login">
+  <ul class="nav nav-tabs">
+    <li class="active"><a data-toggle="tab" href="#login"><img src="images/login.png" alt="login" class="icons"></img>Login</a></li>
+    <li><a data-toggle="tab" href="#register"><img src="images/register.ico" alt="register" class="icons"></img>Register</a></li>
+  </ul>
+
+  <div class="tab-content">
+    <div id="menu1" class="tab-pane fade in active">
+      <form ng-submit="onLoginSubmit()">
+        <input type="text" placeholder="Username" ng-model="username" name="username" required></input>
+        <input type="password" placeholder="Password" ng-model="password" name="password" required></input>
+        <input type="submit" value="Login"></input>
+        <div id="message"></div>
+      </form>
+    </div>
+  </div>
+</section>

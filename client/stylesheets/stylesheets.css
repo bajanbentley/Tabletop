@@ -1,0 +1,67 @@
+body {
+  width: 100%;
+  margin: 0;
+  background-color: #f0f0f5;
+}
+
+section.shrinktabs {
+  background-color: white;
+  width: 30%;
+  overflow: hidden;
+  border: 1px solid lightgrey;
+  position: relative;
+  left: 50%;
+  -webkit-transform: translate(-50%, 0%);
+  -moz-transform: translate(-50%, 0%);
+  transform: translate(-50%, 0%);
+  border-radius: 5px;
+  font-family: 'Josefin Sans', sans-serif;
+}
+
+ul.nav-tabs > li {
+  width: 50%;
+  -webkit-border-radius: 5px;
+  -moz-border-radius: 5px;
+  border-radius: 5px;
+}
+
+ul.nav-tabs {
+  margin: 0;
+}
+
+.tab-content {
+  height: 100%;
+  padding: 10px;
+}
+
+img.icons {
+  width: 20px;
+  height: 20px;
+  margin: 10px 10px;
+}
+
+input {
+  width: 100%;
+  margin: 10px 0px;
+  border-radius: 2px;
+  border: 1px solid lightgrey;
+  height: 50px;
+  padding: 10px;
+}
+
+input[type="text"]:focus {
+  box-shadow: 1px 1px 5px lightblue;
+}
+
+input[type="submit"] {
+  border: 1;
+  border-radius: 5px;
+}
+
+input[type="submit"]:hover {
+  background-color: lightblue;
+}
+
+div.well {
+  box-shadow: 5px 5px 5px lightblue;
+}

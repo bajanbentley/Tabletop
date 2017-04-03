@@ -48,3 +48,6 @@ Temporary Items
 
 #ignore node_module
 node_modules/
+
+#ignore all log files
+*.log
