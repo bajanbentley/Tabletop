@@ -9,6 +9,9 @@
 <li>Type <code>npm install</code> into cmd</li>
 <li>run using <code>npm start</code> in cmd</li>
 <li>Open browser and go type 'localhost:3000' without single quotes</li>
+<ul>
+  <li>Or whatever port the server is connected to. That is "Server on port:xxxx" <br> localhost:xxxx </li>
+</ul>
 </ol>
 <br>
 # Install and run Instructions (Linux)<br>
