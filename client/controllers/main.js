@@ -159,7 +159,7 @@ app.controller('four', function($scope) {
       var loader = new THREE.TextureLoader();
 
     	camera = new THREE.PerspectiveCamera( 75, window.innerWidth / window.innerHeight, 1, 10000 );
-      camera.position.y = 50;
+      camera.position.y = 100;
     	camera.position.z = 1500;
 
       loader.load('images/wood4.png', function ( texture ) {
