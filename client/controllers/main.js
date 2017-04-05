@@ -20,8 +20,8 @@ app.config(function($routeProvider) {
     .when("/profile", {
       templateUrl : "templates/profile.htm"
     })
-    .when("/four", {
-      templateUrl : "templates/four.htm"
+    .when("/war", {
+      templateUrl : "templates/war.htm"
     })
     .when("/games", {
       templateUrl : "templates/games.htm"
@@ -145,7 +145,7 @@ app.controller('games', function($scope, $location) {
   }
 });
 
-app.controller('four', function($scope) {
+app.controller('warCardGame', function($scope) {
   var initScene = function() {
     var scene, camera, renderer;
     var geometry, material, mesh, table, cards = [], card;
@@ -183,16 +183,17 @@ app.controller('four', function($scope) {
     	renderer = new THREE.WebGLRenderer();
     	renderer.setSize( window.innerWidth, window.innerHeight );
 
-    	document.getElementById("four").appendChild( renderer.domElement );
+    	document.getElementById("war").appendChild( renderer.domElement );
 
     }
 
     function createCards() {
-      geometry = new THREE.BoxGeometry( 300, 10, 500 );
+      geometry = new THREE.BoxGeometry( 300, 10, 400 );
       material = new THREE.MeshBasicMaterial( { color: 0xff0000 } );
 
       card = new THREE.Mesh( geometry, material );
       card.rotation.x = Math.PI/2;
+      card.position.y = 200;
       cards.push(card);
       scene.add( card );
     }
