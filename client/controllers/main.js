@@ -171,7 +171,7 @@ app.controller('four', function($scope) {
         table.position.y = -200;
         scene.add( table );
 
-        geometry = new THREE.BoxGeometry( 500, 50, 50 );
+        geometry = new THREE.BoxGeometry( 750, 50, 50 );
         material = new THREE.MeshBasicMaterial( { map: texture } );
       });
 
