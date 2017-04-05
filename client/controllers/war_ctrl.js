@@ -1,5 +1,4 @@
 var app = angular.module('views');
-
 app.controller('warCardGameController', function($scope) {
   var initScene = function() {
     var scene, camera, renderer;
@@ -48,6 +47,7 @@ app.controller('warCardGameController', function($scope) {
 
         table = new THREE.Mesh( geometry, material );
         table.position.y = -200;
+        table.name = "awesome";
         scene.add( table );
       });
 
@@ -55,9 +55,43 @@ app.controller('warCardGameController', function($scope) {
 
     	renderer = new THREE.WebGLRenderer();
     	renderer.setSize( window.innerWidth, window.innerHeight );
-
     	document.getElementById("war").appendChild( renderer.domElement );
+    }
 
+
+    //function that allows the screen to be resized.
+    window.addEventListener( 'resize', onWindowResize, false );
+    function onWindowResize(){
+      camera.aspect = window.innerWidth / window.innerHeight;
+      camera.updateProjectionMatrix();
+      renderer.setSize( window.innerWidth, window.innerHeight );
+    }
+
+
+    var raycaster = new THREE.Raycaster();
+    var mouse = new THREE.Vector2(), INTERSECTED;
+    document.addEventListener('click', function() {
+    	// calculate mouse position in normalized device coordinates
+    	// (-1 to +1) for both components
+    	mouse.x = ( event.clientX / window.innerWidth ) * 2 - 1;
+    	mouse.y = - ( event.clientY / window.innerHeight ) * 2 + 1;
+        checkforObject();
+    });
+
+    function checkforObject() {
+    	// update the picking ray with the camera and mouse position
+    	raycaster.setFromCamera( mouse, camera );
+    	// calculate objects intersecting the picking ray
+    	var intersects = raycaster.intersectObjects( scene.children );
+      if ( intersects.length > 0 ) {
+        console.log(intersects[0].object);
+        if (intersects[0].object.name == "card52"){
+          intersects[0].object.rotation.x += Math.PI;
+
+        }
+				} else {
+            console.log("Notouch");
+				}
     }
 
     function createCards() {
@@ -70,6 +104,8 @@ app.controller('warCardGameController', function($scope) {
       loader.load('images/cardback.png', function ( cardBack ) {
         cardback = new THREE.MeshBasicMaterial( { map: cardBack } );
         for (i = 0; i < 52; i++) {
+          //this var x is weird...
+          var x = 0;
           nextCard = i+1;
             loader.load('images/' + nextCard + '.png', function ( face ) {
               material = new THREE.MeshBasicMaterial( { map: face } );
@@ -81,16 +117,21 @@ app.controller('warCardGameController', function($scope) {
                 new THREE.MeshBasicMaterial( { color: 0xffffff } ), // back
                 new THREE.MeshBasicMaterial( { color: 0xffffff } )  // front
               ]
-
               var cubeSidesMaterial = new THREE.MultiMaterial( materials );
-              var cubeGeometry = new THREE.BoxBufferGeometry( 300, 5, 400, 1, 1, 1 );
+              var cubeGeometry = new THREE.BoxBufferGeometry( 300, 1, 400, 1, 1, 1 );
               var newCard = new THREE.Mesh( cubeGeometry, cubeSidesMaterial );
               newCard.position.y = heightIncrements;
-              heightIncrements += 10;
+              heightIncrements += 2;
+
+              x = x + 1;
+              //console.log(x);
+              newCard.name = "card"+x;
               cards.push(newCard);
               scene.add(newCard);
             }); // end card loads
+
         }
+
       }); //end cardback load
 
     }
@@ -136,6 +177,12 @@ app.controller('warCardGameController', function($scope) {
 
     }
   }
+
+
+
+
+
+
 
   window.onload = initScene();
 });
