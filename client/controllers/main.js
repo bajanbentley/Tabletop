@@ -159,7 +159,8 @@ app.controller('four', function($scope) {
       var loader = new THREE.TextureLoader();
 
     	camera = new THREE.PerspectiveCamera( 75, window.innerWidth / window.innerHeight, 1, 10000 );
-      camera.position.y = 100;
+      camera.position.y = 400;
+      camera.rotation.x = Math.PI/4;
     	camera.position.z = 1500;
 
       loader.load('images/wood4.png', function ( texture ) {
@@ -172,12 +173,6 @@ app.controller('four', function($scope) {
 
         geometry = new THREE.BoxGeometry( 500, 50, 50 );
         material = new THREE.MeshBasicMaterial( { map: texture } );
-
-        table = new THREE.Mesh( geometry, material );
-        table.rotation.z = Math.PI / 2;
-        table.position.y = -700;
-        table.position.x = -100;
-        scene.add(table);
       });
 
       geometry = new THREE.BoxGeometry( 200, 200, 200 );
