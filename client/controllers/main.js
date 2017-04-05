@@ -148,7 +148,7 @@ app.controller('games', function($scope, $location) {
 app.controller('four', function($scope) {
   var initScene = function() {
     var scene, camera, renderer;
-    var geometry, material, mesh, table;
+    var geometry, material, mesh, table, cards = [], card;
 
     init();
     animate();
@@ -170,9 +170,6 @@ app.controller('four', function($scope) {
         table = new THREE.Mesh( geometry, material );
         table.position.y = -200;
         scene.add( table );
-
-        geometry = new THREE.BoxGeometry( 500, 50, 50 );
-        material = new THREE.MeshBasicMaterial( { map: texture } );
       });
 
       geometry = new THREE.BoxGeometry( 200, 200, 200 );
@@ -181,11 +178,22 @@ app.controller('four', function($scope) {
     	mesh = new THREE.Mesh( geometry, material );
     	scene.add( mesh );
 
+      createCards();
+
     	renderer = new THREE.WebGLRenderer();
     	renderer.setSize( window.innerWidth, window.innerHeight );
 
     	document.getElementById("four").appendChild( renderer.domElement );
 
+    }
+
+    function createCards() {
+      geometry = new THREE.BoxGeometry( 200, 10, 400 );
+      material = new THREE.MeshBasicMaterial( { color: 0xff0000 } );
+
+      card = new THREE.Mesh( geometry, material );
+      cards.push(card);
+      scene.add( card );
     }
 
     function animate() {
