@@ -148,7 +148,7 @@ app.controller('games', function($scope, $location) {
 app.controller('four', function($scope) {
   var initScene = function() {
     var scene, camera, renderer;
-    var geometry, material, mesh, table;
+    var geometry, material, mesh, table, cards = [], card;
 
     init();
     animate();
@@ -159,24 +159,17 @@ app.controller('four', function($scope) {
       var loader = new THREE.TextureLoader();
 
     	camera = new THREE.PerspectiveCamera( 75, window.innerWidth / window.innerHeight, 1, 10000 );
+      camera.position.y = 400;
+      //camera.rotation.x = Math.PI/4;
     	camera.position.z = 1500;
 
       loader.load('images/wood4.png', function ( texture ) {
-        geometry = new THREE.BoxGeometry( 1500, 50, 1500 );
+        geometry = new THREE.BoxGeometry( 2000, 50, 2000 );
         material = new THREE.MeshBasicMaterial( { map: texture } );
 
         table = new THREE.Mesh( geometry, material );
         table.position.y = -200;
         scene.add( table );
-
-        geometry = new THREE.BoxGeometry( 500, 50, 50 );
-        material = new THREE.MeshBasicMaterial( { map: texture } );
-
-        table = new THREE.Mesh( geometry, material );
-        table.rotation.z = Math.PI / 2;
-        table.position.y = -700;
-        table.position.x = -100;
-        scene.add(table);
       });
 
       geometry = new THREE.BoxGeometry( 200, 200, 200 );
@@ -185,11 +178,23 @@ app.controller('four', function($scope) {
     	mesh = new THREE.Mesh( geometry, material );
     	scene.add( mesh );
 
+      createCards();
+
     	renderer = new THREE.WebGLRenderer();
     	renderer.setSize( window.innerWidth, window.innerHeight );
 
     	document.getElementById("four").appendChild( renderer.domElement );
 
+    }
+
+    function createCards() {
+      geometry = new THREE.BoxGeometry( 300, 10, 500 );
+      material = new THREE.MeshBasicMaterial( { color: 0xff0000 } );
+
+      card = new THREE.Mesh( geometry, material );
+      card.rotation.x = Math.PI/2;
+      cards.push(card);
+      scene.add( card );
     }
 
     function animate() {

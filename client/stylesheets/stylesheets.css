@@ -5,6 +5,12 @@ body, html {
   overflow: hidden;
 }
 
+.navbar {
+  margin: 0;
+  padding: 0;
+  border-radius: 0;
+}
+
 section.shrinktabs {
   background-color: white;
   width: 30%;
