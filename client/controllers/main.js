@@ -192,6 +192,7 @@ app.controller('four', function($scope) {
       material = new THREE.MeshBasicMaterial( { color: 0xff0000 } );
 
       card = new THREE.Mesh( geometry, material );
+      card.rotation.x = Math.PI/2;
       cards.push(card);
       scene.add( card );
     }

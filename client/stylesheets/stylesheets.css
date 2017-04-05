@@ -5,12 +5,7 @@ body, html {
   overflow: hidden;
 }
 
-section {
-  margin: 0;
-  padding: 0;
-}
-
-div {
+.navbar {
   margin: 0;
   padding: 0;
 }
