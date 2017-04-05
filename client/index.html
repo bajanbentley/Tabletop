@@ -16,9 +16,15 @@
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 <script src="js/three.min.js"></script>
 <script src="./controllers/main.js"></script>
+<script src="./controllers/login_ctrl.js"></script>
+<script src="./controllers/war_ctrl.js"></script>
+<script src="./controllers/register_ctrl.js"></script>
+
+<script src="./controllers/profile_ctrl.js"></script>
+<script src="./controllers/games_ctrl.js"></script>
 </head>
 <body ng-app="views">
-<div ng-controller="login" ng-include="navbarTemplate"></div>
+<div ng-controller="loginController" ng-include="navbarTemplate"></div>
 <div ng-view></div>
 
 </body>
