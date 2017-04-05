@@ -188,7 +188,7 @@ app.controller('four', function($scope) {
     }
 
     function createCards() {
-      geometry = new THREE.BoxGeometry( 200, 10, 400 );
+      geometry = new THREE.BoxGeometry( 300, 10, 500 );
       material = new THREE.MeshBasicMaterial( { color: 0xff0000 } );
 
       card = new THREE.Mesh( geometry, material );
