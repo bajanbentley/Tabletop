@@ -164,14 +164,14 @@ app.controller('four', function($scope) {
     	camera.position.z = 1500;
 
       loader.load('images/wood4.png', function ( texture ) {
-        geometry = new THREE.BoxGeometry( 1500, 50, 1500 );
+        geometry = new THREE.BoxGeometry( 2000, 50, 2000 );
         material = new THREE.MeshBasicMaterial( { map: texture } );
 
         table = new THREE.Mesh( geometry, material );
         table.position.y = -200;
         scene.add( table );
 
-        geometry = new THREE.BoxGeometry( 750, 50, 50 );
+        geometry = new THREE.BoxGeometry( 500, 50, 50 );
         material = new THREE.MeshBasicMaterial( { map: texture } );
       });
 

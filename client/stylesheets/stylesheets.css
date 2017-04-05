@@ -5,6 +5,16 @@ body, html {
   overflow: hidden;
 }
 
+section {
+  margin: 0;
+  padding: 0;
+}
+
+div {
+  margin: 0;
+  padding: 0;
+}
+
 section.shrinktabs {
   background-color: white;
   width: 30%;
