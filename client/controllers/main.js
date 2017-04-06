@@ -1,8 +1,8 @@
 var app = angular.module("views", ["ngRoute"]);
-
 /**************************
 Routing
 ***************************/
+
 app.config(function($routeProvider) {
     $routeProvider
     .when("/", {
@@ -12,125 +12,25 @@ app.config(function($routeProvider) {
       templateUrl : "templates/main.htm"
     })
     .when("/login", {
-      templateUrl : "templates/login.htm"
+      templateUrl : "templates/login.htm",
+      controller : "loginController"
     })
     .when("/register", {
-      templateUrl : "templates/register.htm"
+      templateUrl : "templates/register.htm",
+      controller : "registerController"
     })
     .when("/profile", {
-      templateUrl : "templates/profile.htm"
+      templateUrl : "templates/profile.htm",
+      controller : "profileController"
+    })
+    .when("/war", {
+      templateUrl : "templates/war.htm",
+      controller:  'warCardGameController'
+    })
+    .when("/games", {
+      templateUrl : "templates/games.htm",
+      controller : "gamesController"
     });
-});
-
-/*************************************************
-Controllers
-*************************************************/
-app.controller('register', function($scope, $http, $timeout, $location, $timeout) {
-  $scope.onRegisterSubmit = function() {
-    if(this.password != this.confirmPass) { document.getElementById("message").innerHTML = "Passwords do not match."; return false; }
-    const user = {
-      name: this.name,
-      email: this.email,
-      username: this.username,
-      password: this.password,
-    }
-
-    $http.post('users/register', user, {headers: {'Content-type': 'application/json'}})
-    .then(
-      function successCallback(data) {
-        if(data.data.success == false) { document.getElementById("message").innerHTML = "Username/Email already in use."; return;}
-        document.getElementById("message").innerHTML = "Registration successful! You will be redirected to the login page in 3 seconds."
-        $timeout(function() {
-          $location.path('/login');
-        }, 3000);
-      },
-      function errorCallback(err) {
-        document.getElementById("message").innerHTML = "An error occurred while trying to create the account. Please try again later."
-      }
-    );
-
-  };
-});
-
-app.controller('login', function($scope, $http, $location, loginAuth, userInfo) {
-  $scope.navbarTemplate = './templates/navbar_nologged.htm';
-
-  $scope.$on('$locationChangeSuccess', function() {
-    $scope.navbarTemplate = (loginAuth.getLogged() || localStorage.getItem('id_token') != null) ? './templates/navbar_logged.htm' : './templates/navbar_nologged.htm' ;
-  });
-
-  $scope.onLoginSubmit = function() {
-      const user = {
-        username: this.username,
-        password: this.password,
-      }
-
-      $http.post('users/auth', user, {headers: {'Content-type': 'application/json'}})
-      .then(
-      function successCallback(data) {
-        if(data.data.success) {
-          $scope.storeUserData(data.data.token, data.data.user);
-          $scope.getProfile();
-          loginAuth.setLogged(true);
-          $location.path('/home');
-        }
-        else document.getElementById("message").innerHTML = "Username or password is incorrect";
-      },
-      function errorCallback(err) {
-        document.getElementById("message").innerHTML = "An error occurred while trying to login. Please try again later."
-      });
-
-      $scope.storeUserData = function(token, user) {
-        localStorage.setItem('id_token', token);
-        localStorage.setItem('user', JSON.stringify(user));
-        userInfo.setUserWithToken(token, user);
-      }
-
-  };
-
-  $scope.logout = function() {
-    userInfo.clearUser();
-    localStorage.clear();
-    loginAuth.setLogged(false);
-    $location.path('/login');
-  }
-
-  $scope.getProfile = function() {
-    //console.log(userInfo.loadToken());
-    $http.get('users/profile', {headers: {'Authorization': userInfo.loadToken()}})
-    .then(
-    function successCallback(data) {
-        userInfo.setUserProfile(data.data.user);
-    },
-    function errorCallback(err) {
-        console.log("Unable to get user information.")
-    });
-  }
-
-});
-
-app.controller('profile', function($scope, userInfo) {
-
-  $scope.getUsername = function() {
-    return userInfo.getUsername();
-  }
-
-  $scope.getEmail = function() {
-    return userInfo.getEmail();
-  }
-
-  $scope.getWins = function() {
-    return userInfo.getWins();
-  }
-
-  $scope.getLoses = function() {
-    return userInfo.getLoses();
-  }
-
-  $scope.getName = function() {
-    return userInfo.getName();
-  }
-
 });
 
 /*************************************************

@@ -4,21 +4,31 @@
 <title>Tabletop Games</title>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.7/angular.min.js"></script>
-<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.7/angular-route.js"></script>
+
 <!-- Latest compiled and minified CSS -->
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
 <link rel="stylesheet" href="./stylesheets/stylesheets.css">
 <link href="https://fonts.googleapis.com/css?family=Josefin+Sans" rel="stylesheet">
 <!-- jQuery library -->
+
+</head>
+<body ng-app="views">
+<div ng-controller="loginController" ng-include="navbarTemplate"></div>
+<div ng-view></div>
+
+<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.7/angular.min.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.7/angular-route.js"></script>
+<script src="http://cdn.peerjs.com/0.3/peer.js"></script>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
 <!-- Latest compiled JavaScript -->
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+<script src="js/three.min.js"></script>
 <script src="./controllers/main.js"></script>
-</head>
-<body ng-app="views">
-<div ng-controller="login" ng-include="navbarTemplate"></div>
-<div ng-view></div>
+<script src="./controllers/login_ctrl.js"></script>
+<script src="./controllers/war_ctrl.js"></script>
+<script src="./controllers/register_ctrl.js"></script>
 
+<script src="./controllers/profile_ctrl.js"></script>
+<script src="./controllers/games_ctrl.js"></script>
 </body>
 </html>
