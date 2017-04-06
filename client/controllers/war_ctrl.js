@@ -67,33 +67,6 @@ app.controller('warCardGameController', function($scope) {
       renderer.setSize( window.innerWidth, window.innerHeight );
     }
 
-
-    var raycaster = new THREE.Raycaster();
-    var mouse = new THREE.Vector2(), INTERSECTED;
-    document.addEventListener('click', function() {
-    	// calculate mouse position in normalized device coordinates
-    	// (-1 to +1) for both components
-    	mouse.x = ( event.clientX / window.innerWidth ) * 2 - 1;
-    	mouse.y = - ( event.clientY / window.innerHeight ) * 2 + 1;
-        checkforObject();
-    });
-
-    function checkforObject() {
-    	// update the picking ray with the camera and mouse position
-    	raycaster.setFromCamera( mouse, camera );
-    	// calculate objects intersecting the picking ray
-    	var intersects = raycaster.intersectObjects( scene.children );
-      if ( intersects.length > 0 ) {
-        console.log(intersects[0].object);
-        if (intersects[0].object.name == "card52"){
-          intersects[0].object.rotation.x += Math.PI;
-
-        }
-				} else {
-            console.log("Notouch");
-				}
-    }
-
     function createCards() {
       var i = 0;
       var loader = new THREE.TextureLoader(loadingManager);
@@ -176,7 +149,36 @@ app.controller('warCardGameController', function($scope) {
     	renderer.render( scene, camera );
 
     }
+
+    var raycaster = new THREE.Raycaster();
+    var mouse = new THREE.Vector2(), INTERSECTED;
+    document.addEventListener('mousedown', function() {
+      // calculate mouse position in normalized device coordinates
+      // (-1 to +1) for both components
+      mouse.x = ( event.clientX / window.innerWidth ) * 2 - 1;
+      mouse.y = - ( event.clientY / window.innerHeight ) * 2 + 1;
+        checkforObject();
+    });
+
+    function checkforObject() {
+      // update the picking ray with the camera and mouse position
+      raycaster.setFromCamera( mouse, camera );
+      // calculate objects intersecting the picking ray
+      var intersects = raycaster.intersectObjects( cards );
+      if ( intersects.length > 0 ) {
+        //console.log(intersects[0].object);
+        if (intersects[0].object.name == "card52"){
+          intersects[0].object.rotation.x += Math.PI;
+
+        }
+        } else {
+            console.log("Notouch");
+        }
+    }
+
   }
+
+
 
 
 
