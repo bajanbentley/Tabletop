@@ -160,6 +160,7 @@ app.controller('warCardGameController', function($scope, userInfo) {
       // (-1 to +1) for both components
       mouse.x = ( event.clientX / window.innerWidth ) * 2 - 1;
       mouse.y = - ( event.clientY / window.innerHeight ) * 2 + 1;
+      mouse.y += 0.1; //accounts for navbar height
         checkforObject();
     });
 
