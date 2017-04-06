@@ -1,5 +1,7 @@
 var app = angular.module('views');
-app.controller('warCardGameController', function($scope) {
+app.controller('warCardGameController', function($scope, userInfo) {
+  var peerId = null;
+
   var initScene = function() {
     var scene, camera, renderer;
     var geometry, material, mesh, table, cards = [], card, cardback;
@@ -56,6 +58,7 @@ app.controller('warCardGameController', function($scope) {
     	renderer = new THREE.WebGLRenderer();
     	renderer.setSize( window.innerWidth, window.innerHeight );
     	document.getElementById("war").appendChild( renderer.domElement );
+
     }
 
 
@@ -152,7 +155,7 @@ app.controller('warCardGameController', function($scope) {
 
     var raycaster = new THREE.Raycaster();
     var mouse = new THREE.Vector2(), INTERSECTED;
-    document.addEventListener('mousedown', function() {
+    document.addEventListener('mousedown', function(event) {
       // calculate mouse position in normalized device coordinates
       // (-1 to +1) for both components
       mouse.x = ( event.clientX / window.innerWidth ) * 2 - 1;
@@ -177,7 +180,6 @@ app.controller('warCardGameController', function($scope) {
     }
 
   }
-
 
 
 
