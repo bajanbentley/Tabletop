@@ -6,7 +6,6 @@ app.controller('warCardGameController', function($scope, userInfo) {
   var initScene = function() {
     var scene, camera, renderer;
     var geometry, material, mesh, table, cards = [], card, cardback;
-    $scope.checkDoneLoading = false;
     var loadingScreen = {
       scene: new THREE.Scene(),
       camera: new THREE.PerspectiveCamera( 75, window.innerWidth / window.innerHeight, 0.1, 1000),
