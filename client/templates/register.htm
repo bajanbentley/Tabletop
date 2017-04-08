@@ -1,0 +1,24 @@
+<section class="shrinktabs" ng-controller="registerController">
+  <ul class="nav nav-tabs">
+    <li><a data-toggle="tab" href="#login"><img src="images/login.png" alt="login" class="icons"></img>Login</a></li>
+    <li class="active"><a data-toggle="tab" href="#register"><img src="images/register.png" alt="register" class="icons"></img>Register</a></li>
+  </ul>
+
+  <div class="tab-content">
+    <div id="home" class="tab-pane fade in active">
+      <form name="myForm" ng-submit="onRegisterSubmit()">
+        <input type="text" placeholder="Name" ng-model="name" name="name" required></input>
+		<input type="email" name="email" ng-model="email" placeholder="Email" required>
+		  <span style="color:red" ng-show="myForm.email.$dirty && myForm.email.$invalid">
+		  <span ng-show="myForm.email.$error.required">Email is required.</span>
+		  <span ng-show="myForm.email.$error.email">Invalid email address.</span>
+		 </span>
+        <input type="text" placeholder="Username" ng-model="username" name="username" required></input>
+        <input type="password" placeholder="Password" ng-model="password" name="password" required></input>
+        <input type="password" placeholder="Retype password" ng-model="confirmPass" name="confirmPass" required></input>
+        <input type="submit" value="Register">
+        <div id="message"></div>
+      </form>
+    </div>
+  </div>
+</section>
