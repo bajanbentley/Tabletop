@@ -72,3 +72,16 @@ input[type="submit"]:hover {
 div.well {
   box-shadow: 5px 5px 5px lightblue;
 }
+
+input#partner {
+  position: absolute;
+  margin: 0;
+  width: 200px;
+}
+
+input#connect {
+  position: absolute;
+  margin: 0;
+  width: 100px;
+  left: 200px;
+}
