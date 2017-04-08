@@ -1,6 +1,5 @@
 var app = angular.module('views');
 app.controller('warCardGameController', function($scope, userInfo) {
-  var peerId = null;
   var inputBox = document.getElementById('partner');
   var connectBox = document.getElementById('connect');
 
@@ -17,8 +16,6 @@ app.controller('warCardGameController', function($scope, userInfo) {
     var loadingManager = null;
 
     init();
-    if($scope.peer == null)
-      $scope.peer = new Peer(userInfo.getUsername(), {key: 'netk2dmirepnwmi'});
     animate();
 
     function init() {
@@ -153,7 +150,6 @@ app.controller('warCardGameController', function($scope, userInfo) {
       }
 
     	requestAnimationFrame( animate );
-      $scope.checkDoneLoading = true;
     	renderer.render( scene, camera );
 
     }
@@ -186,35 +182,6 @@ app.controller('warCardGameController', function($scope, userInfo) {
     }
 
   }
-
-  $scope.friendId = null;
-
-  $scope.connect = function() {
-
-
-      var conn = $scope.peer.connect($scope.friendId);
-
-      conn.on('open', function(){
-        inputBox.style.visibility = "hidden";
-        connectBox.style.visibility = "hidden";
-        conn.send('hi!');
-      });
-
-      $scope.peer.on('connection', function(conn) {
-        conn.on('data', function(data){
-          // Will print 'hi!'
-          console.log(data);
-          inputBox.style.visibility = "hidden";
-          connectBox.style.visibility = "hidden";
-        });
-      });
-
-      $scope.peer.on('error', function(err) {
-        console.log(err);
-      });
-  }
-
-
 
 
   window.onload = initScene();
