@@ -2,7 +2,6 @@ body, html {
   width: 100%;
   margin: 0;
   background-color: #f0f0f5;
-  overflow: hidden;
 }
 
 .navbar {
@@ -71,4 +70,8 @@ input[type="submit"]:hover {
 
 div.well {
   box-shadow: 5px 5px 5px lightblue;
+}
+
+section#playArea {
+  overflow: hidden;
 }
