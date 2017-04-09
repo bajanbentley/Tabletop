@@ -2,7 +2,6 @@ body, html {
   width: 100%;
   margin: 0;
   background-color: #f0f0f5;
-  overflow: hidden;
 }
 
 .navbar {
@@ -73,15 +72,6 @@ div.well {
   box-shadow: 5px 5px 5px lightblue;
 }
 
-input#partner {
-  position: absolute;
-  margin: 0;
-  width: 200px;
-}
-
-input#connect {
-  position: absolute;
-  margin: 0;
-  width: 100px;
-  left: 200px;
+section#playArea {
+  overflow: hidden;
 }
