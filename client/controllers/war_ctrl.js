@@ -1,9 +1,8 @@
 var app = angular.module('views');
 app.controller('warCardGameController', function($scope, userInfo) {
-  var inputBox = document.getElementById('partner');
-  var connectBox = document.getElementById('connect');
 
   var initScene = function() {
+
     var scene, camera, renderer;
     var geometry, material, mesh, table, cards = [], card, cardback;
     var loadingScreen = {
