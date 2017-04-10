@@ -4,6 +4,16 @@ body, html {
   background-color: #f0f0f5;
 }
 
+#score{
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  -khtml-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+
+}
+
 .navbar {
   margin: 0;
   padding: 0;
