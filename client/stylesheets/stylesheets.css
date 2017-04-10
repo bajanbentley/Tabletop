@@ -99,6 +99,14 @@ div.well {
   padding-top: 260px;
 }
 
+.tictactoe_button_about {
+  background: url(/images/tic-tac-toe.gif) 3px 5px no-repeat;
+  background-size: 100% 100%;
+  padding-left: 870px;
+  padding-top: 260px;
+  width: 60%;
+}
+
 .war_button_blue {
   border: 5px solid #000000;
   color: #FBFBFB;
