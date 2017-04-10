@@ -127,3 +127,10 @@ section.mainRectanglesNoBack {
 #games {
   text-align: center;
 }
+
+#score {
+  color: white;
+  position: absolute;
+  font-size: 200%;
+  font-weight: bold;
+}
