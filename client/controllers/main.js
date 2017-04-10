@@ -27,6 +27,10 @@ app.config(function($routeProvider) {
       templateUrl : "templates/war.htm",
       controller:  'warCardGameController'
     })
+    .when("/tictactoe", {
+      templateUrl : "templates/tictactoe.htm",
+      controller: "tictactoeController"
+    })
     .when("/games", {
       templateUrl : "templates/games.htm",
       controller : "gamesController"
