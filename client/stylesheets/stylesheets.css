@@ -102,3 +102,25 @@ div.well {
 section#playArea {
   overflow: hidden;
 }
+
+section#main {
+  font-family: 'Macondo', cursive;
+  font-size: 150%;
+  background-color: white;
+}
+
+section#image {
+  width: 100%;
+  height: 300px;
+}
+
+section.mainRectangles {
+  width: 100%;
+  height: 300px;
+  background-color: #e6e6e6;
+}
+
+section.mainRectanglesNoBack {
+  width: 100%;
+  height: 300px;
+}
