@@ -2,7 +2,6 @@ body, html {
   width: 100%;
   margin: 0;
   background-color: #f0f0f5;
-  overflow: hidden;
 }
 
 .navbar {
@@ -74,29 +73,57 @@ div.well {
 }
 
 .war_button {
-    padding: 10px; 
-    margin-right: 8px;
-    margin-bottom:10px;
-    display: inline-block;
-    white-space: nowrap;
-    position:relative;
-    border-radius: 10px;
-    -moz-border-radius: 10px; 
-    -webkit-border-radius:10px;     
+  margin-top: 10px;
+  margin-bottom:10px;
+  display: inline-block;
+  white-space: nowrap;
+  position:relative;
+  border-radius: 10px;
+  -moz-border-radius: 10px;
+  -webkit-border-radius:10px;
 }
 
 .war_button_about {
-    background: url(/images/war_title.png) 3px 5px no-repeat;
-    padding-left: 870px;
-    padding-top: 260px;
-    margin-left: 25%;
+  background: url(/images/war_title.png) 3px 5px no-repeat;
+  padding-left: 870px;
+  padding-top: 260px;
 }
 
 .war_button_blue {
-    border: 5px solid #000000;
-    color: #FBFBFB;
+  border: 5px solid #000000;
+  color: #FBFBFB;
 }
 .war_button_blue:hover {
-    opacity:0.5; 
-    filter:alpha(opacity=90);        
+  opacity:0.5;
+  filter:alpha(opacity=90);
+}
+
+section#playArea {
+  overflow: hidden;
+}
+
+section#main {
+  font-family: 'Macondo', cursive;
+  font-size: 150%;
+  background-color: white;
+}
+
+section#image {
+  width: 100%;
+  height: 300px;
+}
+
+section.mainRectangles {
+  width: 100%;
+  height: 300px;
+  background-color: #e6e6e6;
+}
+
+section.mainRectanglesNoBack {
+  width: 100%;
+  height: 300px;
+}
+
+#games {
+  text-align: center;
 }

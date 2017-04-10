@@ -1,8 +1,8 @@
 var app = angular.module('views');
 app.controller('warCardGameController', function($scope, userInfo) {
-  var peerId = null;
 
   var initScene = function() {
+
     var scene, camera, renderer;
     var geometry, material, mesh, table, cards = [], card, cardback;
     var loadingScreen = {
@@ -148,7 +148,6 @@ app.controller('warCardGameController', function($scope, userInfo) {
       }
 
     	requestAnimationFrame( animate );
-
     	renderer.render( scene, camera );
 
     }
@@ -181,12 +180,6 @@ app.controller('warCardGameController', function($scope, userInfo) {
     }
 
   }
-
-
-
-
-
-
 
 
   window.onload = initScene();
