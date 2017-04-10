@@ -9,7 +9,7 @@ app.controller('warCardGameController', function($scope, userInfo, $location, lo
   var cards = [], AIcards = [];
   var x, o;
   var loadedResources = false;
-  var cardStack = 0, AIcardstack = 0;;
+  var cardStack = 0, AIcardstack = 0, playerScore = 0, AIscore = 0, turns = 26;
   var score = document.getElementById("score");
   var loadingScreen = {
     scene: new THREE.Scene(),
@@ -56,6 +56,17 @@ app.controller('warCardGameController', function($scope, userInfo, $location, lo
   loadingManager.onLoad = doneLoading;
   render = renderFunction();
   //render();
+
+  /********************************************************************
+  *      This keeps the text on the page from being selected
+  ********************************************************************/
+  if (typeof document.onselectstart!="undefined") {
+    document.onselectstart=new Function ("return false");
+  }
+  else{
+    document.onmousedown=new Function ("return false");
+    document.onmouseup=new Function ("return true");
+  }
   /********************************************************************
   *                            Functions
   ********************************************************************/
@@ -221,10 +232,12 @@ app.controller('warCardGameController', function($scope, userInfo, $location, lo
       raycaster.setFromCamera( mouse, camera );
       // calculate objects intersecting the picking ray
       var intersects = raycaster.intersectObjects( cards );
-      if ( intersects.length > 0 ) {
+      if ( intersects.length > 0 && intersects[0].object.player=="Drawable") {
+          intersects[0].object.player="Drawn"
           cards.pop();
+          turns--;
           intersects[0].object.rotation.x += Math.PI;
-          intersects[0].object.position.x = 0;
+          intersects[0].object.position.x = -0;
           intersects[0].object.position.y = cardStack;
           cardStack += 2;
           poppedAICard = AIcards.pop();
@@ -234,12 +247,57 @@ app.controller('warCardGameController', function($scope, userInfo, $location, lo
           AIcardstack += 2;
           if(poppedAICard.value > intersects[0].object.value) { //Checl for AI win
             //AIcardstack += 2;
-            score.innerHTML = "AI wins the round!"
+            score.innerHTML = "AI wins the round!";
+            playerScore++;
           }
           else if (intersects[0].object.value > poppedAICard.value) //Check human win
-            score.innerHTML = "Player wins the round!"
+          {
+            score.innerHTML = "Player wins the round!";
+            AIscore++;
+          }
           else { //Draw
-            score.innerHTML = "Draw!"
+            score.innerHTML = "Draw!";
+            //morecards for when cards match [if you don't want this comment from here**]
+            for (j=0;j<1;j++){
+              turns--;
+              playerCards = cards.pop();
+              intersects[j+1].object.position.x = -300;
+              intersects[j+1].object.position.y = cardStack;
+              cardStack += 2;
+              poppedAICard = AIcards.pop();
+              poppedAICard.position.x =  300;
+              poppedAICard.position.y = AIcardstack;
+              AIcardstack += 2;
+
+              //sleep(2000);
+            }
+            turns--;
+            cards.pop();
+            intersects[j+3].object.rotation.x += Math.PI;
+            intersects[j+3].object.position.x = 0;
+            intersects[j+3].object.position.y = cardStack;
+            cardStack += 2;
+            poppedAICard = AIcards.pop();
+            poppedAICard.rotation.x += Math.PI;
+            poppedAICard.position.x = 0;
+            poppedAICard.position.y = AIcardstack;
+            AIcardstack += 2;
+            //Check for AI win
+            if(poppedAICard.value > intersects[0].object.value) playerScore = playerScore+3;
+            if (intersects[0].object.value > poppedAICard.value)  AIscore = AIscore +3;
+            ///**to here
+
+          }
+          if (turns == 0){
+            if (playerScore > AIscore){
+              score.innerHTML = "Your Score: "+playerScore+"<br>AI's score: "+AIscore+"<br>You won!";
+            }
+            else if (playerScore == AIscore){
+              score.innerHTML = "Your Score: "+playerScore+"<br>AI's score: "+AIscore+"<br>Look, a draw!";
+            }
+            else{
+              score.innerHTML = "Your Score: "+playerScore+"<br>AI's score: "+AIscore+"<br>You lost lol!";
+            }
           }
       }
       else
@@ -277,6 +335,7 @@ app.controller('warCardGameController', function($scope, userInfo, $location, lo
     for(i = 0; i  < cards.length; i++) {
       if(i < 26) {
         cards[i].position.y = heights;
+        cards[i].player = "Drawable";
         scene.add(cards[i]);
         heights += 2;
       }
@@ -290,5 +349,9 @@ app.controller('warCardGameController', function($scope, userInfo, $location, lo
       }
     }
   } //end add cards to scene
-
+  function sleep(miliseconds) {
+   var currentTime = new Date().getTime();
+   while (currentTime + miliseconds >= new Date().getTime()) {
+   }
+ }
 });
