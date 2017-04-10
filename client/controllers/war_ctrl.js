@@ -6,13 +6,11 @@ app.controller('warCardGameController', function($scope, userInfo, $location, lo
   var scene, camera, renderer, render;
   var loadingManager, myDeckLoader, tableLoader;
   var table, card, topCard;
-  var cards = [], AIcards = [], humanCards = [];
+  var cards = [], AIcards = [];
   var x, o;
   var loadedResources = false;
   var cardStack = 0, AIcardstack = 0, playerScore = 0, AIscore = 0, turns = 26;
   var score = document.getElementById("score");
-  var poppedAICard = null, poppedPlayerCard = null;
-  var checkMovedCard = true;
   var loadingScreen = {
     scene: new THREE.Scene(),
     camera: new THREE.PerspectiveCamera( 75, window.innerWidth / window.innerHeight, 0.1, 1000),
@@ -229,49 +227,38 @@ app.controller('warCardGameController', function($scope, userInfo, $location, lo
     });
 
     function checkforObject() {
+      var poppedAICard = null;
       // update the picking ray with the camera and mouse position
       raycaster.setFromCamera( mouse, camera );
       // calculate objects intersecting the picking ray
       var intersects = raycaster.intersectObjects( cards );
-      if ( intersects.length > 0 && intersects[0].object.player=="Drawable" && checkMovedCard) {
-          poppedPlayerCard = intersects[0].object;
+      if ( intersects.length > 0 && intersects[0].object.player=="Drawable") {
           intersects[0].object.player="Drawn"
-          //poppedPlayerCard = cards.pop();
+          cards.pop();
           turns--;
           intersects[0].object.rotation.x += Math.PI;
           intersects[0].object.position.x = -0;
-          //intersects[0].object.position.y = cardStack;
+          intersects[0].object.position.y = cardStack;
           cardStack += 2;
           poppedAICard = AIcards.pop();
           poppedAICard.rotation.x += Math.PI;
           poppedAICard.position.x = 0;
-          //poppedAICard.position.y = AIcardstack;
+          poppedAICard.position.y = AIcardstack;
           AIcardstack += 2;
-          checkMovedCard = false;
-          if(poppedAICard.value > intersects[0].object.value) { //Check for AI win    WORKING
+          if(poppedAICard.value > intersects[0].object.value) { //Checl for AI win
             //AIcardstack += 2;
             score.innerHTML = "AI wins the round!";
-            setTimeout(moveCardToAIStack, 1000);
-            //sleep(1000);
             playerScore++;
           }
-          else if (intersects[0].object.value > poppedAICard.value) //Check human win NOT WORKING
+          else if (intersects[0].object.value > poppedAICard.value) //Check human win
           {
-            /**********************
-            *
-            Need to do
-
-            player win so add both cards to the bottom of player pile
-            ******************************/
             score.innerHTML = "Player wins the round!";
-            setTimeout(moveCardToPlayerStack, 1000);
             AIscore++;
           }
           else { //Draw
             score.innerHTML = "Draw!";
-            setTimeout(moveCardToAIStack, 1000); //can be commented out
             //morecards for when cards match [if you don't want this comment from here**]
-            /**for (j=0;j<1;j++){
+            for (j=0;j<1;j++){
               turns--;
               playerCards = cards.pop();
               intersects[j+1].object.position.x = -300;
@@ -298,10 +285,10 @@ app.controller('warCardGameController', function($scope, userInfo, $location, lo
             //Check for AI win
             if(poppedAICard.value > intersects[0].object.value) playerScore = playerScore+3;
             if (intersects[0].object.value > poppedAICard.value)  AIscore = AIscore +3;
-            ///**to here**/
+            ///**to here
 
           }
-          /*if (turns == 0){
+          if (turns == 0){
             if (playerScore > AIscore){
               score.innerHTML = "Your Score: "+playerScore+"<br>AI's score: "+AIscore+"<br>You won!";
             }
@@ -311,7 +298,7 @@ app.controller('warCardGameController', function($scope, userInfo, $location, lo
             else{
               score.innerHTML = "Your Score: "+playerScore+"<br>AI's score: "+AIscore+"<br>You lost lol!";
             }
-          }*/
+          }
       }
       else
       {
@@ -356,65 +343,15 @@ app.controller('warCardGameController', function($scope, userInfo, $location, lo
         cards[i].position.y = heightsOtherPlayer;
         cards[i].position.x = -600;
         cards[i].position.z = -400;
-        cards[i].player = "AIDrawable";
         AIcards[heightsOtherPlayer/2] = cards[i];
         scene.add(AIcards[heightsOtherPlayer/2]);
         heightsOtherPlayer += 2;
       }
     }
-    AIcardstack = heightsOtherPlayer;
   } //end add cards to scene
-
   function sleep(miliseconds) {
    var currentTime = new Date().getTime();
    while (currentTime + miliseconds >= new Date().getTime()) {
    }
- }
-
- function moveCardToAIStack() {
-   var i = 0;
-
-   AIcards.unshift(poppedAICard);
-   AIcards.unshift(poppedPlayerCard);
-   poppedAICard.position.x = -600;
-   poppedAICard.position.z = -400;
-   poppedPlayerCard.position.y = 0;
-   poppedPlayerCard.position.x = -600;
-   poppedPlayerCard.position.z = -400;
-   poppedPlayerCard.player = "AIDrawable";
-   poppedAICard.position.y = 2;
-   scene.traverse(function(cards) {
-     if(cards.player == "AIDrawable") {
-       cards.position.y = i;
-       i+=2;
-       console.log(cards.player);
-     }
-   });
-
-   poppedAICard.rotation.x += Math.PI;
-   poppedPlayerCard.rotation.x += Math.PI;
-   checkMovedCard = true;
- }
-
- function moveCardToPlayerStack() {
-  var i = 0;
-
-   poppedPlayerCard.position.x = 600;
-   poppedPlayerCard.position.y = 2;
-   poppedPlayerCard.position.z = 700;
-   poppedAICard.position.x = 600;
-   poppedAICard.position.y = 0;
-   poppedAICard.position.z = 700;
-   poppedAICard.player = "Drawable";
-   scene.traverse(function(cards) {
-     if(cards.player == "Drawable") {
-       cards.position.y = i;
-       i+=2;
-       console.log(cards.player);
-     }
-   });
-   poppedAICard.rotation.x += Math.PI;
-   poppedPlayerCard.rotation.x += Math.PI;
-   checkMovedCard = true;
  }
 });
