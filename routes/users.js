@@ -65,4 +65,46 @@ router.get('/profile', passport.authenticate('jwt', {session: false}), function(
   res.json({user: req.user});
 }); //profile
 
+router.post('/updateWins', function(req, res, next) {
+  const username = req.body.username;
+  const db = req.db;
+
+  User.getUserByUsername(username, function(err, user) {
+    if(err) throw err;
+    if(!user) {
+      return res.json({success: false, msg: 'User not found'}); //if user exists
+    }
+
+    User.updateRecordsWin(user.username, user.wins, function(err) {
+      res.json({
+        user: {
+          wins: user.wins
+        }
+      });
+    });
+
+  });
+});
+
+
+router.post('/updateLoses', function(req, res, next) {
+  const username = req.body.username;
+
+  User.getUserByUsername(username, function(err, user) {
+    if(err) throw err;
+    if(!user) {
+      return res.json({success: false, msg: 'User not found'}); //if user exists
+    }
+
+    User.updateRecordsLoses(user.username, user.loses, function(err) {
+      res.json({
+        user: {
+          loses: user.loses
+        }
+      });
+    });
+
+  });
+});
+
 module.exports = router;
