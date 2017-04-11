@@ -18,7 +18,7 @@ app.controller('warCardGameController', function($scope, userInfo, $location, lo
     camera: new THREE.PerspectiveCamera( 75, window.innerWidth / window.innerHeight, 0.1, 1000),
   };
   var gameWon = false;
-  var GAMESPEED = 5000;
+  var GAMESPEED = 3000;
   /************************************
   *           Check login
   **************************************/
@@ -70,6 +70,7 @@ app.controller('warCardGameController', function($scope, userInfo, $location, lo
     document.onmousedown=new Function ("return false");
     document.onmouseup=new Function ("return true");
   }
+  
   /********************************************************************
   *                            Functions
   ********************************************************************/
@@ -175,9 +176,7 @@ app.controller('warCardGameController', function($scope, userInfo, $location, lo
               y = 0;
               z += 1;
             }
-
             console.log(newCard.name + " : " + newCard.value);
-
             cards.push(newCard);
           }); // end card loads
 
