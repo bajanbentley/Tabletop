@@ -81,6 +81,7 @@ input[type="submit"]:hover {
 
 div.well {
   box-shadow: 5px 5px 5px lightblue;
+  background-color: #C0B283;
 }
 
 .war_button {
@@ -184,6 +185,8 @@ div#overlay {
 
 img.logo {
   width: 75px;
+  position: relative;
+  bottom: 5px;
 }
 
 img#mainPageLogo {
@@ -195,4 +198,19 @@ img#mainPageLogo {
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
+}
+
+div#features {
+  width: 33%;
+  display: inline-block;
+  text-align: center;
+  vertical-align: top;
+}
+
+div#availableGames {
+  text-align: center;
+  display: inline-block;
+  width: 20%;
+  border: 5px solid #F4F4F4;
+  border-radius: 20px;
 }
