@@ -57,3 +57,21 @@ module.exports.comparePassword = function(candidatePassword, hash, callback) {
     callback(null, isMatch);
   });
 }
+
+module.exports.updateRecordsWin = function(username, newWin, callback) {
+  const query = {username: username}
+  User.update(query,
+  {
+    $inc: { wins: 1 }
+  },
+  callback);
+}
+
+module.exports.updateRecordsLoses = function(username, newLose, callback) {
+  const query = {username: username}
+  User.update(query,
+  {
+    $inc: { loses: 1 }
+  },
+  callback);
+}
