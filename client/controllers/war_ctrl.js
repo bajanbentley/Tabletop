@@ -9,7 +9,7 @@ app.controller('warCardGameController', function($scope, userInfo, $location, lo
   var cards = [], AIcards = [], humanCards = [], drawArray = [];
   var x, o;
   var loadedResources = false;
-  var playerScore = 0, AIscore = 0, turns = 26, counter =0, isDrawConsecutive = 0;
+  var playerScore = 0, AIscore = 0, turnLimit = 26, counter =0, isDrawConsecutive = 0,  turns = 0;
   var score = document.getElementById("score");
   var poppedAICard = null, poppedPlayerCard = null;
   var checkMovedCard = true, continueAnimate = true;
@@ -18,7 +18,7 @@ app.controller('warCardGameController', function($scope, userInfo, $location, lo
     camera: new THREE.PerspectiveCamera( 75, window.innerWidth / window.innerHeight, 0.1, 1000),
   };
   var gameWon = false;
-
+  var GAMESPEED = 3000;
   /************************************
   *           Check login
   **************************************/
@@ -70,6 +70,7 @@ app.controller('warCardGameController', function($scope, userInfo, $location, lo
     document.onmousedown=new Function ("return false");
     document.onmouseup=new Function ("return true");
   }
+
   /********************************************************************
   *                            Functions
   ********************************************************************/
@@ -135,16 +136,21 @@ app.controller('warCardGameController', function($scope, userInfo, $location, lo
   }
 
   function createDeck(){
+    console.log("Version 0.11Derp");
     var i = 0;
     var nextCard = 0;
     var heightIncrements = 0;
+    var x = 2;
+    var y = 0;
+    var z = 2;
+    var suite = ["diamond","club","heart","spade"];
 
     myDeckLoader.load('images/cardback.png', function ( cardBack ) {
       cardback = new THREE.MeshBasicMaterial( { map: cardBack } );
-      for (i = 0; i < 52; i++) {
+      for (i = 5; i < 57; i++) {
         //this var x is weird...
-        var x = 0;
-        nextCard = i+1;
+
+        nextCard = i;
           myDeckLoader.load('images/' + nextCard + '.png', function ( face ) {
             material = new THREE.MeshBasicMaterial( { map: face } );
             var materials = [
@@ -162,11 +168,16 @@ app.controller('warCardGameController', function($scope, userInfo, $location, lo
             newCard.position.x = 600;
             newCard.position.z = 700;
             heightIncrements += 2;
-
-            x = x + 1;
             //console.log(x);
-            newCard.name = "card"+x;
-            newCard.value = Math.floor(x/4.05); // has to be 4.05, dont change
+            newCard.name = suite[y] +" of " + z;
+            newCard.value = z; // has to be 4.05, dont change
+            y+=1;
+            x+=1;
+            if(y == 4){
+              y = 0;
+              z += 1;
+            }
+            console.log(newCard.name + " : " + newCard.value);
             cards.push(newCard);
           }); // end card loads
 
@@ -243,10 +254,10 @@ app.controller('warCardGameController', function($scope, userInfo, $location, lo
 
           //PlayerCard
           poppedPlayerCard = humanCards.pop();
-
+          console.log(poppedPlayerCard.value + "name: " + poppedPlayerCard.name);
           //AIPlayerCard
           poppedAICard = AIcards.pop();
-
+          console.log(poppedAICard.value + "name: " + poppedAICard.name);
           //makes sure the card is no longer drawable
           poppedPlayerCard.player="Drawn";
 
@@ -378,7 +389,7 @@ app.controller('warCardGameController', function($scope, userInfo, $location, lo
             isDrawConsecutive = 0;
             score.innerHTML = "AI wins the round!";
             //setTimeout(moveCardToAIStack, 4000);
-            setTimeout(moveCardToAIStack, 3000);
+            setTimeout(moveCardToAIStack, GAMESPEED);
 
             //Makes sure draw array is not empty
             //Then proceeds to deal with the cards all over the table
@@ -386,6 +397,9 @@ app.controller('warCardGameController', function($scope, userInfo, $location, lo
               checkIfGameWon();
               setTimeout(ifDrawLost, 3200);
             }
+
+            //increment turns
+            turns++;
             //sleep(1000);
           }
           else if (poppedPlayerCard.value > poppedAICard.value) //Check human win is also WORKING
@@ -397,7 +411,7 @@ app.controller('warCardGameController', function($scope, userInfo, $location, lo
             //The draw is no longer consecutive
             isDrawConsecutive = 0;
             score.innerHTML = "Player wins the round!";
-            setTimeout(moveCardToPlayerStack, 3000);
+            setTimeout(moveCardToPlayerStack, GAMESPEED);
 
             //Makes sure draw array is not empty
             //Then proceeds to deal with the cards all over the table
@@ -405,6 +419,10 @@ app.controller('warCardGameController', function($scope, userInfo, $location, lo
               checkIfGameWon();
               setTimeout(ifDrawWon, 3200);
             }
+
+            //increment turns
+            turns++;
+
           }
           else { //Draw
             score.innerHTML = "Draw! Play again to win the stash!";
@@ -429,7 +447,7 @@ app.controller('warCardGameController', function($scope, userInfo, $location, lo
       drawArray.push(poppedPlayerCard);
       drawArray.push(poppedAICard);
       var j = 0;
-      for(j = 0; j <= 1; j++ ){
+      for(j = 0; j <= 3; j++ ){
         checkIfGameWon();
         if(gameWon==true){
           break;
@@ -586,6 +604,7 @@ app.controller('warCardGameController', function($scope, userInfo, $location, lo
    checkMovedCard = true;
    //resetText();
    checkIfGameWon();
+   checkIfturnLimitReached();
  }
 
  function claimToPlayerStack(){
@@ -616,6 +635,7 @@ function moveCardToPlayerStackFromDraw(drawncard){
   checkMovedCard = true;
   //resetText();
   checkIfGameWon();
+  checkIfturnLimitReached();
 }//ends moveCardToPlayerStackFromDraw function
 
 /*******************
@@ -623,7 +643,7 @@ function moveCardToPlayerStackFromDraw(drawncard){
 *********************/
 function moveCardToAIStackFromDraw(drawncard){
  AIcards.unshift(drawncard);
- drawncard.position.x = 600;
+ drawncard.position.x = -600;
  drawncard.position.y = 2;
  drawncard.position.z = -400;;
  drawncard.player = "AIDrawable";
@@ -642,6 +662,7 @@ function moveCardToAIStackFromDraw(drawncard){
  checkMovedCard = true;
  //resetText();
  checkIfGameWon();
+ checkIfturnLimitReached();
 }//ends moveCardToAIStackFromDraw function
 
   /*******************
@@ -678,6 +699,7 @@ function moveCardToAIStackFromDraw(drawncard){
    checkMovedCard = true;
    //resetText();
    checkIfGameWon();
+   checkIfturnLimitReached();
  }
 
  function resetText(){
@@ -695,5 +717,28 @@ function moveCardToAIStackFromDraw(drawncard){
      score.innerHTML = "YOU LOST THE GAME!";
      gameWon = true;
    }
+ }
+
+ function checkIfturnLimitReached(){
+   if(turns >= turnLimit){
+       var aiCardsTotal = AIcards.length;
+       var playerCardsTotal = humanCards.lengh;
+       if(playerCardsTotal > aiCardsTotal){
+         console.log("AI LOST");
+         score.innerHTML = "YOU WON THE GAME!";
+         gameWon = true;
+       }
+       else if(aiCardsTotal > playerCardsTotal ){
+         console.log("Player Lost");
+         score.innerHTML = "YOU LOST THE GAME!";
+         gameWon = true;
+       }
+       else if(playerCardsTotal == aiCardsTotal){
+         console.log("Draw");
+         score.innerHTML = "This game is a draw!";
+         gameWon = true;
+       }
+     }
+
  }
 });
