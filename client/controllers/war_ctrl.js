@@ -12,6 +12,7 @@ app.controller('warCardGameController', function($scope, userInfo, $location, lo
   var cardStack = 0, AIcardstack = 0, playerScore = 0, AIscore = 0, turns = 26;
   var score = document.getElementById("score");
   var poppedAICard = null, poppedPlayerCard = null;
+  var drawStack = [];
   var checkMovedCard = true;
   var loadingScreen = {
     scene: new THREE.Scene(),
@@ -253,7 +254,7 @@ app.controller('warCardGameController', function($scope, userInfo, $location, lo
           if(poppedAICard.value > intersects[0].object.value) { //Check for AI win    WORKING
             //AIcardstack += 2;
             score.innerHTML = "AI wins the round!";
-            setTimeout(moveCardToPlayerStack, 1000);
+            setTimeout(moveCardToAIStack, 1000);
             //sleep(1000);
             playerScore++;
           }
@@ -271,37 +272,7 @@ app.controller('warCardGameController', function($scope, userInfo, $location, lo
           }
           else { //Draw
             score.innerHTML = "Draw!";
-            setTimeout(moveCardToPlayerStack, 1000); //can be commented out
-            //morecards for when cards match [if you don't want this comment from here**]
-            /**for (j=0;j<1;j++){
-              turns--;
-              playerCards = cards.pop();
-              intersects[j+1].object.position.x = -300;
-              intersects[j+1].object.position.y = cardStack;
-              cardStack += 2;
-              poppedAICard = AIcards.pop();
-              poppedAICard.position.x =  300;
-              poppedAICard.position.y = AIcardstack;
-              AIcardstack += 2;
-
-              //sleep(2000);
-            }
-            turns--;
-            cards.pop();
-            intersects[j+3].object.rotation.x += Math.PI;
-            intersects[j+3].object.position.x = 0;
-            intersects[j+3].object.position.y = cardStack;
-            cardStack += 2;
-            poppedAICard = AIcards.pop();
-            poppedAICard.rotation.x += Math.PI;
-            poppedAICard.position.x = 0;
-            poppedAICard.position.y = AIcardstack;
-            AIcardstack += 2;
-            //Check for AI win
-            if(poppedAICard.value > intersects[0].object.value) playerScore = playerScore+3;
-            if (intersects[0].object.value > poppedAICard.value)  AIscore = AIscore +3;
-            ///**to here**/
-
+            setTimeout(moveCardToPlayerStack, 1000);
           }
           /*if (turns == 0){
             if (playerScore > AIscore){
@@ -373,11 +344,16 @@ app.controller('warCardGameController', function($scope, userInfo, $location, lo
    }
  }
 
+ function claimToAIStack(){
+
+ }
+
  function moveCardToAIStack() {
+   claimToAIStack();
    var i = 0;
 
-   AIcards.unshift(poppedAICard);
-   AIcards.unshift(poppedPlayerCard);
+   AIcards.push(poppedAICard);
+   AIcards.push(poppedPlayerCard);
    poppedAICard.position.x = -600;
    poppedAICard.position.z = -400;
    poppedAICard.player = "AIDrawable";
@@ -386,23 +362,31 @@ app.controller('warCardGameController', function($scope, userInfo, $location, lo
    poppedPlayerCard.position.z = -400;
    poppedPlayerCard.player = "AIDrawable";
    poppedAICard.position.y = 2;
-   scene.traverse(function(cards) {
-     if(cards.player == "AIDrawable") {
-       cards.position.y = i;
+   scene.traverse(function(AIcards) {
+     if(AIcards.player == "AIDrawable") {
+       AIcards.position.y = i;
        i+=2;
-       console.log(cards.player);
+       console.log(AIcards.player);
      }
    });
 
    poppedAICard.rotation.x += Math.PI;
    poppedPlayerCard.rotation.x += Math.PI;
    checkMovedCard = true;
+   resetText();
    checkIfGameWon();
  }
 
+ function claimToPlayerStack(){
+
+ }
+
  function moveCardToPlayerStack() {
+   claimToPlayerStack();
   var i = 0;
 
+  cards.push(poppedAICard);
+  cards.push(poppedPlayerCard);
    poppedPlayerCard.position.x = 600;
    poppedPlayerCard.position.y = 2;
    poppedPlayerCard.position.z = 700;
@@ -421,7 +405,21 @@ app.controller('warCardGameController', function($scope, userInfo, $location, lo
    poppedAICard.rotation.x += Math.PI;
    poppedPlayerCard.rotation.x += Math.PI;
    checkMovedCard = true;
+   resetText();
    checkIfGameWon();
+ }
+
+ function moveCardsToDrawStack(){
+   drawStack.push(poppedPlayerCard);
+   drawStack.push(poppedAICard);
+
+   poppedPlayerCard.position.x = 0;
+   poppedPlayerCard.position.y = 0;
+   poppedPlayerCard.position.z = 500;
+ }
+
+ function resetText(){
+   score.innerHTML = "";
  }
 
  function checkIfGameWon(){
