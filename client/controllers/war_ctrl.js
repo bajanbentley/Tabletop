@@ -9,7 +9,7 @@ app.controller('warCardGameController', function($scope, userInfo, $location, lo
   var cards = [], AIcards = [], humanCards = [], drawArray = [];
   var x, o;
   var loadedResources = false;
-  var playerScore = 0, AIscore = 0, turnLimit = 26, counter =0, isDrawConsecutive = 0, var turns = 0;
+  var playerScore = 0, AIscore = 0, turnLimit = 26, counter =0, isDrawConsecutive = 0,  turns = 0;
   var score = document.getElementById("score");
   var poppedAICard = null, poppedPlayerCard = null;
   var checkMovedCard = true, continueAnimate = true;
@@ -137,12 +137,15 @@ app.controller('warCardGameController', function($scope, userInfo, $location, lo
     var i = 0;
     var nextCard = 0;
     var heightIncrements = 0;
+    var x = 1;
+    var y = 0;
+    var z = 2;
 
     myDeckLoader.load('images/cardback.png', function ( cardBack ) {
       cardback = new THREE.MeshBasicMaterial( { map: cardBack } );
-      for (i = 0; i < 52; i++) {
+      for (i = 4; i < 56; i++) {
         //this var x is weird...
-        var x = 0;
+
         nextCard = i+1;
           myDeckLoader.load('images/' + nextCard + '.png', function ( face ) {
             material = new THREE.MeshBasicMaterial( { map: face } );
@@ -161,11 +164,17 @@ app.controller('warCardGameController', function($scope, userInfo, $location, lo
             newCard.position.x = 600;
             newCard.position.z = 700;
             heightIncrements += 2;
-
-            x = x + 1;
             //console.log(x);
             newCard.name = "card"+x;
-            newCard.value = Math.floor(x/4.05); // has to be 4.05, dont change
+            y+=1;
+            x+=1;
+            if(y == 5){
+              y = 1;
+              z += 1;
+            }
+            newCard.value = z; // has to be 4.05, dont change
+            console.log(newCard.name + " : " + newCard.value);
+
             cards.push(newCard);
           }); // end card loads
 
@@ -721,11 +730,12 @@ function moveCardToAIStackFromDraw(drawncard){
          score.innerHTML = "YOU LOST THE GAME!";
          gameWon = true;
        }
+       else if(playerCardsTotal == aiCardsTotal){
+         console.log("Draw");
+         score.innerHTML = "This game is a draw!";
+         gameWon = true;
+       }
      }
-     else if(playerCardsTotal == aiCardsTotal){
-       console.log("Draw");
-       score.innerHTML = "This game is a draw!";
-       gameWon = true;
-     }
+
  }
 });
