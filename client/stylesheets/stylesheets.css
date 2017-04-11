@@ -187,6 +187,10 @@ img.logo {
 }
 
 img#mainPageLogo {
+  border-style: solid;
+  border-color: grey;
+  border-width: 2px;
+  border-radius: 25px;
   position: relative;
   top: 50%;
   left: 50%;
