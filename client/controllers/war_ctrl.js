@@ -70,7 +70,7 @@ app.controller('warCardGameController', function($scope, userInfo, $location, lo
     document.onmousedown=new Function ("return false");
     document.onmouseup=new Function ("return true");
   }
-  
+
   /********************************************************************
   *                            Functions
   ********************************************************************/
@@ -136,6 +136,7 @@ app.controller('warCardGameController', function($scope, userInfo, $location, lo
   }
 
   function createDeck(){
+    console.log("Version 0.11Derp");
     var i = 0;
     var nextCard = 0;
     var heightIncrements = 0;
