@@ -18,6 +18,7 @@ app.controller('warCardGameController', function($scope, userInfo, $location, lo
     camera: new THREE.PerspectiveCamera( 75, window.innerWidth / window.innerHeight, 0.1, 1000),
   };
   var gameWon = false;
+  var GAMESPEED = 5000;
   /************************************
   *           Check login
   **************************************/
@@ -137,16 +138,17 @@ app.controller('warCardGameController', function($scope, userInfo, $location, lo
     var i = 0;
     var nextCard = 0;
     var heightIncrements = 0;
-    var x = 1;
+    var x = 2;
     var y = 0;
     var z = 2;
+    var suite = ["diamond","club","heart","spade"];
 
     myDeckLoader.load('images/cardback.png', function ( cardBack ) {
       cardback = new THREE.MeshBasicMaterial( { map: cardBack } );
-      for (i = 4; i < 56; i++) {
+      for (i = 5; i < 57; i++) {
         //this var x is weird...
 
-        nextCard = i+1;
+        nextCard = i;
           myDeckLoader.load('images/' + nextCard + '.png', function ( face ) {
             material = new THREE.MeshBasicMaterial( { map: face } );
             var materials = [
@@ -165,14 +167,15 @@ app.controller('warCardGameController', function($scope, userInfo, $location, lo
             newCard.position.z = 700;
             heightIncrements += 2;
             //console.log(x);
-            newCard.name = "card"+x;
+            newCard.name = suite[y] +" of " + z;
+            newCard.value = z; // has to be 4.05, dont change
             y+=1;
             x+=1;
-            if(y == 5){
-              y = 1;
+            if(y == 4){
+              y = 0;
               z += 1;
             }
-            newCard.value = z; // has to be 4.05, dont change
+
             console.log(newCard.name + " : " + newCard.value);
 
             cards.push(newCard);
@@ -251,10 +254,10 @@ app.controller('warCardGameController', function($scope, userInfo, $location, lo
 
           //PlayerCard
           poppedPlayerCard = humanCards.pop();
-
+          console.log(poppedPlayerCard.value + "name: " + poppedPlayerCard.name);
           //AIPlayerCard
           poppedAICard = AIcards.pop();
-
+          console.log(poppedAICard.value + "name: " + poppedAICard.name);
           //makes sure the card is no longer drawable
           poppedPlayerCard.player="Drawn";
 
@@ -386,7 +389,7 @@ app.controller('warCardGameController', function($scope, userInfo, $location, lo
             isDrawConsecutive = 0;
             score.innerHTML = "AI wins the round!";
             //setTimeout(moveCardToAIStack, 4000);
-            setTimeout(moveCardToAIStack, 3000);
+            setTimeout(moveCardToAIStack, GAMESPEED);
 
             //Makes sure draw array is not empty
             //Then proceeds to deal with the cards all over the table
@@ -408,7 +411,7 @@ app.controller('warCardGameController', function($scope, userInfo, $location, lo
             //The draw is no longer consecutive
             isDrawConsecutive = 0;
             score.innerHTML = "Player wins the round!";
-            setTimeout(moveCardToPlayerStack, 3000);
+            setTimeout(moveCardToPlayerStack, GAMESPEED);
 
             //Makes sure draw array is not empty
             //Then proceeds to deal with the cards all over the table
@@ -444,7 +447,7 @@ app.controller('warCardGameController', function($scope, userInfo, $location, lo
       drawArray.push(poppedPlayerCard);
       drawArray.push(poppedAICard);
       var j = 0;
-      for(j = 0; j <= 1; j++ ){
+      for(j = 0; j <= 3; j++ ){
         checkIfGameWon();
         if(gameWon==true){
           break;
