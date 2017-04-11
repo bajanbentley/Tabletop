@@ -9,7 +9,7 @@ app.controller('warCardGameController', function($scope, userInfo, $location, lo
   var cards = [], AIcards = [], humanCards = [], drawArray = [];
   var x, o;
   var loadedResources = false;
-  var playerScore = 0, AIscore = 0, turns = 26, counter =0, isDrawConsecutive = 0;
+  var playerScore = 0, AIscore = 0, turnLimit = 26, counter =0, isDrawConsecutive = 0, var turns = 0;
   var score = document.getElementById("score");
   var poppedAICard = null, poppedPlayerCard = null;
   var checkMovedCard = true, continueAnimate = true;
@@ -18,7 +18,6 @@ app.controller('warCardGameController', function($scope, userInfo, $location, lo
     camera: new THREE.PerspectiveCamera( 75, window.innerWidth / window.innerHeight, 0.1, 1000),
   };
   var gameWon = false;
-
   /************************************
   *           Check login
   **************************************/
@@ -386,6 +385,9 @@ app.controller('warCardGameController', function($scope, userInfo, $location, lo
               checkIfGameWon();
               setTimeout(ifDrawLost, 3200);
             }
+
+            //increment turns
+            turns++;
             //sleep(1000);
           }
           else if (poppedPlayerCard.value > poppedAICard.value) //Check human win is also WORKING
@@ -405,6 +407,10 @@ app.controller('warCardGameController', function($scope, userInfo, $location, lo
               checkIfGameWon();
               setTimeout(ifDrawWon, 3200);
             }
+
+            //increment turns
+            turns++;
+
           }
           else { //Draw
             score.innerHTML = "Draw! Play again to win the stash!";
@@ -586,6 +592,7 @@ app.controller('warCardGameController', function($scope, userInfo, $location, lo
    checkMovedCard = true;
    //resetText();
    checkIfGameWon();
+   checkIfturnLimitReached();
  }
 
  function claimToPlayerStack(){
@@ -616,6 +623,7 @@ function moveCardToPlayerStackFromDraw(drawncard){
   checkMovedCard = true;
   //resetText();
   checkIfGameWon();
+  checkIfturnLimitReached();
 }//ends moveCardToPlayerStackFromDraw function
 
 /*******************
@@ -623,7 +631,7 @@ function moveCardToPlayerStackFromDraw(drawncard){
 *********************/
 function moveCardToAIStackFromDraw(drawncard){
  AIcards.unshift(drawncard);
- drawncard.position.x = 600;
+ drawncard.position.x = -600;
  drawncard.position.y = 2;
  drawncard.position.z = -400;;
  drawncard.player = "AIDrawable";
@@ -642,6 +650,7 @@ function moveCardToAIStackFromDraw(drawncard){
  checkMovedCard = true;
  //resetText();
  checkIfGameWon();
+ checkIfturnLimitReached();
 }//ends moveCardToAIStackFromDraw function
 
   /*******************
@@ -678,6 +687,7 @@ function moveCardToAIStackFromDraw(drawncard){
    checkMovedCard = true;
    //resetText();
    checkIfGameWon();
+   checkIfturnLimitReached();
  }
 
  function resetText(){
@@ -695,5 +705,27 @@ function moveCardToAIStackFromDraw(drawncard){
      score.innerHTML = "YOU LOST THE GAME!";
      gameWon = true;
    }
+ }
+
+ function checkIfturnLimitReached(){
+   if(turns >= turnLimit){
+       var aiCardsTotal = AIcards.length;
+       var playerCardsTotal = humanCards.lengh;
+       if(playerCardsTotal > aiCardsTotal){
+         console.log("AI LOST");
+         score.innerHTML = "YOU WON THE GAME!";
+         gameWon = true;
+       }
+       else if(aiCardsTotal > playerCardsTotal ){
+         console.log("Player Lost");
+         score.innerHTML = "YOU LOST THE GAME!";
+         gameWon = true;
+       }
+     }
+     else if(playerCardsTotal == aiCardsTotal){
+       console.log("Draw");
+       score.innerHTML = "This game is a draw!";
+       gameWon = true;
+     }
  }
 });
