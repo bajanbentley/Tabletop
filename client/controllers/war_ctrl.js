@@ -6,15 +6,18 @@ app.controller('warCardGameController', function($scope, userInfo, $location, lo
   var scene, camera, renderer, render;
   var loadingManager, myDeckLoader, tableLoader;
   var table, card, topCard;
-  var cards = [], AIcards = [];
+  var cards = [], AIcards = [], humanCards = [], drawArray = [];
   var x, o;
   var loadedResources = false;
-  var cardStack = 0, AIcardstack = 0, playerScore = 0, AIscore = 0, turns = 26;
+  var playerScore = 0, AIscore = 0, turns = 26, counter =0;
   var score = document.getElementById("score");
+  var poppedAICard = null, poppedPlayerCard = null;
+  var checkMovedCard = true;
   var loadingScreen = {
     scene: new THREE.Scene(),
     camera: new THREE.PerspectiveCamera( 75, window.innerWidth / window.innerHeight, 0.1, 1000),
   };
+  var gameWon = false;
 
   /************************************
   *           Check login
@@ -92,6 +95,7 @@ app.controller('warCardGameController', function($scope, userInfo, $location, lo
     }
   }
 
+  var Animations = function(){};
   function renderFunction(){
     if(!loadedResources) {
       requestAnimationFrame( renderFunction );
@@ -105,6 +109,7 @@ app.controller('warCardGameController', function($scope, userInfo, $location, lo
       return;
     }
     requestAnimationFrame(renderFunction);
+    //Animations();
     renderer.render(scene, camera);
   }
 
@@ -227,68 +232,99 @@ app.controller('warCardGameController', function($scope, userInfo, $location, lo
     });
 
     function checkforObject() {
-      var poppedAICard = null;
+      if(gameWon) return;
       // update the picking ray with the camera and mouse position
       raycaster.setFromCamera( mouse, camera );
       // calculate objects intersecting the picking ray
       var intersects = raycaster.intersectObjects( cards );
-      if ( intersects.length > 0 && intersects[0].object.player=="Drawable") {
-          intersects[0].object.player="Drawn"
-          cards.pop();
-          turns--;
-          intersects[0].object.rotation.x += Math.PI;
-          intersects[0].object.position.x = -0;
-          intersects[0].object.position.y = cardStack;
-          cardStack += 2;
+      if ( intersects.length > 0 && intersects[0].object.player=="Drawable" && checkMovedCard) {
+          poppedPlayerCard = humanCards.pop();
+          //console.log("Intersected: "+intersects[0].object.name+" Popped:"+ poppedPlayerCard.name);
           poppedAICard = AIcards.pop();
-          poppedAICard.rotation.x += Math.PI;
-          poppedAICard.position.x = 0;
-          poppedAICard.position.y = AIcardstack;
-          AIcardstack += 2;
-          if(poppedAICard.value > intersects[0].object.value) { //Checl for AI win
-            //AIcardstack += 2;
-            score.innerHTML = "AI wins the round!";
-            playerScore++;
+          poppedPlayerCard.player="Drawn";
+          //poppedPlayerCard = cards.pop();
+          //console.log(counter);
+          Animations = function(){
+
+            poppedPlayerCard.position.x  -= 5;
+
+            if (poppedPlayerCard.position.y > 0){
+              poppedPlayerCard.position.y -= 1;
+            }
+            if (poppedPlayerCard.rotation.x < Math.PI && poppedPlayerCard.position.x < 300){
+              poppedPlayerCard.rotation.x += 0.10;
+            }
+            if (poppedPlayerCard.rotation.x >= Math.PI){
+              poppedPlayerCard.rotation.x = Math.PI;
+            }
+
+            poppedAICard.position.x  += 5;
+            if(poppedAICard.position.x >= 0){
+              poppedAICard.position.x = 0;
+            }
+
+            if (poppedAICard.position.y > 0){
+              poppedAICard.position.y -= 1;
+            }
+            if (poppedAICard.rotation.x < Math.PI && poppedAICard.position.x > -300){
+              poppedAICard.rotation.x += 0.10;
+            }
+            if (poppedAICard.rotation.x >= Math.PI){
+              poppedAICard.rotation.x = Math.PI;
+            }
+            //if check animations done
+            if(poppedPlayerCard.position.x <= 0){
+              Animations = function(){};
+            }
           }
-          else if (intersects[0].object.value > poppedAICard.value) //Check human win
+          //poppedPlayerCard.position.x = -0;
+
+          checkMovedCard = false;
+          if(poppedAICard.value == poppedPlayerCard.value) { //Check for AI win    WORKING
+            score.innerHTML = "AI wins the round!";
+            //setTimeout(moveCardToAIStack, 4000);
+            setTimeout(moveCardToAIStack, 100);
+            //sleep(1000);
+          }
+          else if (poppedPlayerCard.value == poppedAICard.value) //Check human win NOT WORKING
           {
+            /**********************
+            *
+            Need to do
+            player win so add both cards to the bottom of player pile
+            ******************************/
             score.innerHTML = "Player wins the round!";
-            AIscore++;
+            setTimeout(moveCardToPlayerStack, 100);
           }
           else { //Draw
-            score.innerHTML = "Draw!";
-            //morecards for when cards match [if you don't want this comment from here**]
-            for (j=0;j<1;j++){
-              turns--;
-              playerCards = cards.pop();
-              intersects[j+1].object.position.x = -300;
-              intersects[j+1].object.position.y = cardStack;
-              cardStack += 2;
+            score.innerHTML = "Draw! Defaulting to player win....";
+            //setTimeout(moveCardToPlayerStack, 100);
+
+            //convertThisinto a function:
+            //pushes first set:
+            drawArray.push(poppedPlayerCard);
+            drawArray.push(poppedAICard);
+            var j = 0;
+            for(j = 0; j <= 1; j++ ){
+              poppedPlayerCard = humanCards.pop();
               poppedAICard = AIcards.pop();
-              poppedAICard.position.x =  300;
-              poppedAICard.position.y = AIcardstack;
-              AIcardstack += 2;
-
-              //sleep(2000);
+              drawArray.push(poppedPlayerCard);
+              drawArray.push(poppedAICard);
             }
-            turns--;
-            cards.pop();
-            intersects[j+3].object.rotation.x += Math.PI;
-            intersects[j+3].object.position.x = 0;
-            intersects[j+3].object.position.y = cardStack;
-            cardStack += 2;
-            poppedAICard = AIcards.pop();
-            poppedAICard.rotation.x += Math.PI;
-            poppedAICard.position.x = 0;
-            poppedAICard.position.y = AIcardstack;
-            AIcardstack += 2;
-            //Check for AI win
-            if(poppedAICard.value > intersects[0].object.value) playerScore = playerScore+3;
-            if (intersects[0].object.value > poppedAICard.value)  AIscore = AIscore +3;
-            ///**to here
+            console.log("Initial size: "+drawArray.length);
 
+              score.innerHTML = "Player wins the round!";
+              for(l = 0; l <= drawArray.length; l++ ){
+                console.log("RAN :" + l);
+                moveCardToPlayerStackFromDraw(drawArray.pop());
+              }
+
+              console.log("Cards AI left: "+AIcards.length);
+              console.log("Cards player left: "+humanCards.length);
+              var z = AIcards.length+humanCards.length;
+              console.log("Total: "+z);
           }
-          if (turns == 0){
+          /*if (turns == 0){
             if (playerScore > AIscore){
               score.innerHTML = "Your Score: "+playerScore+"<br>AI's score: "+AIscore+"<br>You won!";
             }
@@ -298,7 +334,7 @@ app.controller('warCardGameController', function($scope, userInfo, $location, lo
             else{
               score.innerHTML = "Your Score: "+playerScore+"<br>AI's score: "+AIscore+"<br>You lost lol!";
             }
-          }
+          }*/
       }
       else
       {
@@ -336,6 +372,7 @@ app.controller('warCardGameController', function($scope, userInfo, $location, lo
       if(i < 26) {
         cards[i].position.y = heights;
         cards[i].player = "Drawable";
+        humanCards.push(cards[i]);
         scene.add(cards[i]);
         heights += 2;
       }
@@ -343,15 +380,124 @@ app.controller('warCardGameController', function($scope, userInfo, $location, lo
         cards[i].position.y = heightsOtherPlayer;
         cards[i].position.x = -600;
         cards[i].position.z = -400;
-        AIcards[heightsOtherPlayer/2] = cards[i];
-        scene.add(AIcards[heightsOtherPlayer/2]);
+        cards[i].player = "AIDrawable";
+        AIcards.push(cards[i]);
+        scene.add(cards[i]);
         heightsOtherPlayer += 2;
       }
     }
   } //end add cards to scene
+
   function sleep(miliseconds) {
    var currentTime = new Date().getTime();
    while (currentTime + miliseconds >= new Date().getTime()) {
+   }
+ }
+
+ function claimToAIStack(){
+
+ }
+
+ function moveCardToAIStack() {
+   //claimToAIStack();
+   AIcards.unshift(poppedAICard);
+   AIcards.unshift(poppedPlayerCard);
+   poppedAICard.position.x = -600;
+   poppedAICard.position.z = -400;
+   poppedAICard.player = "AIDrawable";
+   poppedPlayerCard.position.y = 0;
+   poppedPlayerCard.position.x = -600;
+   poppedPlayerCard.position.z = -400;
+   poppedPlayerCard.player = "AIDrawable";
+   poppedAICard.position.y = 2;
+
+   var newHeight = 0;
+   function restack(){
+     for(var i = 0; i<AIcards.length; i++){
+       AIcards[i].position.y = newHeight;
+       newHeight+=2;
+     }
+   }
+   restack();
+
+   poppedAICard.rotation.x = 0;
+   poppedPlayerCard.rotation.x = 0;
+   console.log("Cards AI left: "+AIcards.length);
+   console.log("Cards player left: "+humanCards.length);
+   var z = AIcards.length+humanCards.length;
+   console.log("Total: "+z);
+   checkMovedCard = true;
+   resetText();
+   checkIfGameWon();
+ }
+
+ function claimToPlayerStack(){
+
+ }
+
+function moveCardToPlayerStackFromDraw(Object drawncard){
+  humanCards.unshift(drawncard);
+  drawncard.position.x = 600;
+  drawncard.position.y = 2;
+  drawncard.position.z = 700;
+  drawncard.player = "Drawable";
+  var newHeight = 0;
+  function restack(){
+    for(var i = 0; i<humanCards.length; i++){
+      humanCards[i].position.y = newHeight;
+      newHeight+=2;
+    }
+  }
+  restack();
+  drawncard.rotation.x = 0;
+  checkMovedCard = true;
+  resetText();
+  checkIfGameWon();
+}
+
+ function moveCardToPlayerStack() {
+   //claimToPlayerStack();
+  humanCards.unshift(poppedAICard);
+  humanCards.unshift(poppedPlayerCard);
+   poppedPlayerCard.position.x = 600;
+   poppedPlayerCard.position.y = 2;
+   poppedPlayerCard.position.z = 700;
+   poppedPlayerCard.player = "Drawable";
+   poppedAICard.position.x = 600;
+   poppedAICard.position.y = 0;
+   poppedAICard.position.z = 700;
+   poppedAICard.player = "Drawable";
+
+   var newHeight = 0;
+   function restack(){
+     for(var i = 0; i<humanCards.length; i++){
+       humanCards[i].position.y = newHeight;
+       newHeight+=2;
+       humanCards[i].player = "Drawable";
+     }
+   }
+   restack();
+   poppedAICard.rotation.x = 0;
+   poppedPlayerCard.rotation.x = 0;
+   checkMovedCard = true;
+   resetText();
+   checkIfGameWon();
+ }
+
+ function resetText(){
+   score.innerHTML = "";
+ }
+
+ function checkIfGameWon(){
+   if(AIcards.length == 0){
+     console.log("AI LOST");
+     score.innerHTML = "YOU WON THE GAME!";
+     gameWon = true;
+   }
+   else if(humanCards.length == 0){
+     console.log("Player Lost");
+     score.innerHTML = "YOU LOST THE GAME!";
+     gameWon = true;
    }
  }
 });
