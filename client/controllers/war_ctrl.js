@@ -9,7 +9,7 @@ app.controller('warCardGameController', function($scope, userInfo, $location, lo
   var cards = [], AIcards = [], humanCards = [], drawArray = [];
   var x, o;
   var loadedResources = false;
-  var playerScore = 0, AIscore = 0, turns = 26, counter =0;
+  var playerScore = 0, AIscore = 0, turns = 26, counter =0, isDrawConsecutive = 0;
   var score = document.getElementById("score");
   var poppedAICard = null, poppedPlayerCard = null;
   var checkMovedCard = true, continueAnimate = true;
@@ -237,69 +237,93 @@ app.controller('warCardGameController', function($scope, userInfo, $location, lo
       raycaster.setFromCamera( mouse, camera );
       // calculate objects intersecting the picking ray
       var intersects = raycaster.intersectObjects( cards );
+      //make sure it the card selected is drawable
       if ( intersects.length > 0 && intersects[0].object.player=="Drawable" && checkMovedCard) {
-          poppedPlayerCard = humanCards.pop();
           //console.log("Intersected: "+intersects[0].object.name+" Popped:"+ poppedPlayerCard.name);
+
+          //PlayerCard
+          poppedPlayerCard = humanCards.pop();
+
+          //AIPlayerCard
           poppedAICard = AIcards.pop();
+
+          //makes sure the card is no longer drawable
           poppedPlayerCard.player="Drawn";
+
+          //need this or shit happens, bad shit
           continueAnimate = true;
-          counter++;
+
           Animations = function(){
-            //if game is a draw
+            //This thing is here to make sure shit doesn't happen, basically kills the animation
             if(poppedPlayerCard.position.x == 0 || continueAnimate == false){
-              console.log("nomorethough");
               Animations = function(){};
             }
-            else if (counter==1 && continueAnimate==true){
-              console.log(counter);
+            //if game is a draw and we continue to animate
+            else if ( poppedPlayerCard.value == poppedAICard.value && continueAnimate==true){
+
+              //player Positions and rotations:
+              //X positions
               poppedPlayerCard.position.x  -= 5;
               if(poppedPlayerCard.position.x <= 200){
                 poppedPlayerCard.position.x = 200;
               }
-
-              if (poppedPlayerCard.position.y > 0){
-                poppedPlayerCard.position.y -= 1;
-              }
+              //X rotations
               if (poppedPlayerCard.rotation.x < Math.PI ){
                 poppedPlayerCard.rotation.x += 0.15;
               }
               if (poppedPlayerCard.rotation.x >= Math.PI){
                 poppedPlayerCard.rotation.x = Math.PI + 0.15;
               }
+              //Y positions
+              //This makes sure the y values are okay, (such as Overlappings)
+              if (poppedPlayerCard.position.y > isDrawConsecutive*2){
+                poppedPlayerCard.position.y -= 1;
+              }
+              //Z positions
+              poppedPlayerCard.position.z -= 5;
+              if(poppedPlayerCard.position.z <= 150){
+                poppedPlayerCard.position.z = 150;
+              }
+
+              //AI positions and rotations
+              //X positions
               poppedAICard.position.x  += 5;
               if(poppedAICard.position.x >= -200){
                 poppedAICard.position.x = -200;
               }
-
-              if (poppedAICard.position.y > 0){
+              //Y positions
+              //This makes sure the y values are okay, (such as Overlappings)
+              if (poppedAICard.position.y > isDrawConsecutive*2){
                 poppedAICard.position.y -= 1;
               }
+              //X rotations
               if (poppedAICard.rotation.x < Math.PI){
                 poppedAICard.rotation.x += 0.15;
               }
               if (poppedAICard.rotation.x >= Math.PI ){
                 poppedAICard.rotation.x = Math.PI + 0.15;
               }
-
-
+              //Z positions
               poppedAICard.position.z += 5;
               if(poppedAICard.position.z >= 150){
                 poppedAICard.position.z = 150;
               }
 
-              poppedPlayerCard.position.z -= 5;
-              if(poppedPlayerCard.position.z <= 150){
-                poppedPlayerCard.position.z = 150;
-              }
+
               //console.log(poppedPlayerCard.value);
               //console.log(poppedAICard.value);
             }
+            //This part is for regular animations where draws are not involved.
             else{
-              poppedPlayerCard.position.x  -= 10;
 
-              if (poppedPlayerCard.position.y > 0){
-                poppedPlayerCard.position.y -= 1;
+              //player Positions and rotations:
+              //X positions
+              poppedPlayerCard.position.x  -= 10;
+              if(poppedPlayerCard.position.x <= 0){
+                poppedPlayerCard.position.x = 0;
               }
+
+              //X rotations
               if (poppedPlayerCard.rotation.x < Math.PI && poppedPlayerCard.position.x < 300){
                 poppedPlayerCard.rotation.x += 0.15;
               }
@@ -307,68 +331,90 @@ app.controller('warCardGameController', function($scope, userInfo, $location, lo
                 poppedPlayerCard.rotation.x = Math.PI;
               }
 
+              //Y positions
+              if (poppedPlayerCard.position.y > 0){
+                poppedPlayerCard.position.y -= 1;
+              }
+
+              //AI positions and rotations
+              //X positions
               poppedAICard.position.x  += 10;
               if(poppedAICard.position.x >= 0){
                 poppedAICard.position.x = 0;
               }
 
-              if (poppedAICard.position.y > 0){
-                poppedAICard.position.y -= 1;
-              }
+              //X rotations
               if (poppedAICard.rotation.x < Math.PI && poppedAICard.position.x > -300){
                 poppedAICard.rotation.x += 0.15;
               }
               if (poppedAICard.rotation.x >= Math.PI){
                 poppedAICard.rotation.x = Math.PI + 0.15;
               }
+
+              //Y positions
+              if (poppedAICard.position.y > 0){
+                poppedAICard.position.y -= 1;
+              }
             }
             //if check animations done
 
           }
-          console.log(drawArray.length);
 
           checkMovedCard = false;
-          if (counter == 1){
+          //This was used to make sure drawing kinda works
+          /*
+          if (counter < 2){
             score.innerHTML = "Draw! Play again to win the stash!";
             checkIfGameWon();
             setTimeout(whenGameDraw, 4000);
+            isDrawConsecutive++;
 
           }
-          else if(poppedAICard.value > poppedPlayerCard.value) { //Check for AI win    WORKING
+          */
+          //else
+
+          if(poppedAICard.value > poppedPlayerCard.value) { //Check for AI win  is  WORKING
+            //The draw is no longer consecutive
+            isDrawConsecutive = 0;
             score.innerHTML = "AI wins the round!";
             //setTimeout(moveCardToAIStack, 4000);
             setTimeout(moveCardToAIStack, 3000);
+
+            //Makes sure draw array is not empty
+            //Then proceeds to deal with the cards all over the table
             if(drawArray.length > 0){
               checkIfGameWon();
-              setTimeout(whenGameDraw, 4000);
+              setTimeout(ifDrawLost, 3200);
             }
             //sleep(1000);
           }
-          else if (poppedPlayerCard.value >= poppedAICard.value) //Check human win NOT WORKING
+          else if (poppedPlayerCard.value > poppedAICard.value) //Check human win is also WORKING
           {
             /**********************
             Need to do
             player win so add both cards to the bottom of player pile
             ******************************/
+            //The draw is no longer consecutive
+            isDrawConsecutive = 0;
             score.innerHTML = "Player wins the round!";
             setTimeout(moveCardToPlayerStack, 3000);
+
+            //Makes sure draw array is not empty
+            //Then proceeds to deal with the cards all over the table
             if(drawArray.length > 0){
               checkIfGameWon();
-              setTimeout(whenGameDraw, 4000);
+              setTimeout(ifDrawWon, 3200);
             }
           }
           else { //Draw
             score.innerHTML = "Draw! Play again to win the stash!";
-            //setTimeout(moveCardToPlayerStack, 100);
-            //convertThisinto a function:
-            //pushes first set:
             checkIfGameWon();
-            setTimeout(whenGameDraw, 4000);
+            setTimeout(whenGameDraw, 3000);
           }
       }
       else
       {
-        console.log( intersects[0].object.position.x);
+        console.log("There is nothing here, go away. Shoo!");
       } //end intersect check
     } // end checkForObject
   } //end checking for mouse click
@@ -393,6 +439,7 @@ app.controller('warCardGameController', function($scope, userInfo, $location, lo
           newlypoppedAICard = AIcards.pop();
           newlypoppedPlayerCard.position.x = -500;
           newlypoppedAICard.position.x = 500;
+          newlypoppedPlayerCard.player ="inDrawDeck";
           drawArray.push(newlypoppedPlayerCard);
           drawArray.push(newlypoppedAICard);
         }
@@ -405,7 +452,7 @@ app.controller('warCardGameController', function($scope, userInfo, $location, lo
   } //end whenGameDraw
 
   /*******************
-  * return the cards to the deck
+  * return the cards to the PLAYER deck
   *********************/
   function ifDrawWon() {
     score.innerHTML = "Player wins the round!";
@@ -421,7 +468,26 @@ app.controller('warCardGameController', function($scope, userInfo, $location, lo
     var z = AIcards.length+humanCards.length;
     console.log("Total: "+z);
 
-  } //end shuffle
+  } //end ifDrawWon
+
+  /*******************
+  * return the cards to the AI deck
+  *********************/
+  function ifDrawLost() {
+    score.innerHTML = "AI wins the round!";
+    //console.log("Initial size: "+drawArray.length);
+    var runTimes = drawArray.length;
+    for(j = 0; j < runTimes; j++ ){
+      moveCardToAIStackFromDraw(drawArray.pop());
+
+    }
+
+    console.log("Cards AI left: "+AIcards.length);
+    console.log("Cards player left: "+humanCards.length);
+    var z = AIcards.length+humanCards.length;
+    console.log("Total: "+z);
+
+  } //end ifDrawWon
   /*******************
   * shuffleDeck
   *********************/
@@ -442,6 +508,9 @@ app.controller('warCardGameController', function($scope, userInfo, $location, lo
 
   } //end shuffle
 
+  /*******************
+  * addCardsToScene
+  *********************/
   function addCardsToScene() {
     var i = 0;
     var heights = 0;
@@ -467,16 +536,25 @@ app.controller('warCardGameController', function($scope, userInfo, $location, lo
     }
   } //end add cards to scene
 
+  /*******************
+  * sleep
+  *********************/
   function sleep(miliseconds) {
    var currentTime = new Date().getTime();
    while (currentTime + miliseconds >= new Date().getTime()) {
    }
  }
 
+ /*******************
+ * Why is this here?
+ *********************/
  function claimToAIStack(){
 
  }
 
+ /*******************
+ * Moves regular AI win to AI's stack
+ *********************/
  function moveCardToAIStack() {
    //claimToAIStack();
    AIcards.unshift(poppedAICard);
@@ -506,7 +584,7 @@ app.controller('warCardGameController', function($scope, userInfo, $location, lo
    var z = AIcards.length+humanCards.length;
    console.log("Total: "+z);
    checkMovedCard = true;
-   resetText();
+   //resetText();
    checkIfGameWon();
  }
 
@@ -514,12 +592,17 @@ app.controller('warCardGameController', function($scope, userInfo, $location, lo
 
  }
 
+ /*******************
+ * Moves player draw win to player's stack
+ *********************/
 function moveCardToPlayerStackFromDraw(drawncard){
   humanCards.unshift(drawncard);
   drawncard.position.x = 600;
   drawncard.position.y = 2;
   drawncard.position.z = 700;
   drawncard.player = "Drawable";
+
+  //restacks
   var newHeight = 0;
   function restack(){
     for(var i = 0; i<humanCards.length; i++){
@@ -528,12 +611,42 @@ function moveCardToPlayerStackFromDraw(drawncard){
     }
   }
   restack();
+
   drawncard.rotation.x = 0;
   checkMovedCard = true;
-  resetText();
+  //resetText();
   checkIfGameWon();
-}
+}//ends moveCardToPlayerStackFromDraw function
 
+/*******************
+* Moves AI draw win to AI's stack
+*********************/
+function moveCardToAIStackFromDraw(drawncard){
+ AIcards.unshift(drawncard);
+ drawncard.position.x = 600;
+ drawncard.position.y = 2;
+ drawncard.position.z = -400;;
+ drawncard.player = "AIDrawable";
+
+ //restacks
+ var newHeight = 0;
+ function restack(){
+   for(var i = 0; i<AIcards.length; i++){
+     AIcards[i].position.y = newHeight;
+     newHeight+=2;
+   }
+ }
+ restack();
+
+ drawncard.rotation.x = 0;
+ checkMovedCard = true;
+ //resetText();
+ checkIfGameWon();
+}//ends moveCardToAIStackFromDraw function
+
+  /*******************
+  * Moves regular player win to player's stack
+  *********************/
  function moveCardToPlayerStack() {
    //claimToPlayerStack();
   humanCards.unshift(poppedAICard);
@@ -558,8 +671,12 @@ function moveCardToPlayerStackFromDraw(drawncard){
    restack();
    poppedAICard.rotation.x = 0;
    poppedPlayerCard.rotation.x = 0;
+   console.log("Cards AI left: "+AIcards.length);
+   console.log("Cards player left: "+humanCards.length);
+   var z = AIcards.length+humanCards.length;
+   console.log("Total: "+z);
    checkMovedCard = true;
-   resetText();
+   //resetText();
    checkIfGameWon();
  }
 
