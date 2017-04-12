@@ -31,6 +31,10 @@ app.config(function($routeProvider) {
       templateUrl : "templates/tictactoe.htm",
       controller: "tictactoeController"
     })
+    .when("/snl",{
+      templateUrl : "templates/snl.htm",
+      controller: "sneksndladderGameController"
+    })
     .when("/games", {
       templateUrl : "templates/games.htm",
       controller : "gamesController"
