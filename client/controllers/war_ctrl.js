@@ -1,5 +1,5 @@
 var app = angular.module('views');
-app.controller('warCardGameController', function($scope, userInfo, $location, loginAuth) {
+app.controller('warCardGameController', function($scope, userInfo, $location, loginAuth, $http) {
   /********************************************************************
   *                          Global Variables
   ********************************************************************/
@@ -786,11 +786,13 @@ function moveCardToAIStackFromDraw(drawncard){
      console.log("AI LOST");
      score.innerHTML = "YOU WON THE GAME!";
      gameWon = true;
+     updateDatabaseWin();
    }
    else if(humanCards.length == 0){
      console.log("Player Lost");
      score.innerHTML = "YOU LOST THE GAME!";
      gameLost = true;
+     updateDatabaseLose();
    }
  }
 
@@ -805,11 +807,13 @@ function moveCardToAIStackFromDraw(drawncard){
          console.log("AI LOST");
          score.innerHTML = "Turns Limit has been reached <br> YOU WON THE GAME!<br>You have "+playerCardsTotal+" remaining<br>AI has " + aiCardsTotal + " cards remaining";
          gameWon = true;
+         updateDatabaseWin();
        }
        else if(aiCardsTotal > playerCardsTotal ){
          console.log("Player Lost");
          score.innerHTML = "Turns Limit has been reached <br>YOU LOST THE GAME!<br>You have "+playerCardsTotal+" remaining<br>AI has " + aiCardsTotal + " cards remaining";
          gameLost = true;
+         updateDatabaseLose();
        }
        else if(playerCardsTotal == aiCardsTotal){
          console.log("Draw");
@@ -820,5 +824,37 @@ function moveCardToAIStackFromDraw(drawncard){
        console.log("turnsOver" + gameWon + gameLost);
      }
 
+ }
+
+ function updateDatabaseLose() {
+   const user = {
+     username: userInfo.getUsername()
+   }
+
+   $http.post('users/updateLoses', user, {headers: {'Content-type': 'application/json'}})
+   .then(
+     function successCallback(data) {
+       console.log("Lose");
+     },
+     function errorCallback(err) {
+       document.getElementById("message").innerHTML = "An error occurred while trying to create the account. Please try again later."
+     }
+   );
+ }
+
+ function updateDatabaseWin() {
+   const user = {
+     username: userInfo.getUsername()
+   }
+
+   $http.post('users/updateWins', user, {headers: {'Content-type': 'application/json'}})
+   .then(
+     function successCallback(data) {
+       console.log("Win");
+     },
+     function errorCallback(err) {
+       document.getElementById("message").innerHTML = "An error occurred while trying to create the account. Please try again later."
+     }
+   );
  }
 });
