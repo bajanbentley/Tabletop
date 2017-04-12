@@ -10,7 +10,7 @@ app.controller('warCardGameController', function($scope, userInfo, $location, lo
   var suite = ["spade","diamond","club","heart"];
   var x, o;
   var loadedResources = false;
-  var playerScore = 0, AIscore = 0, turnLimit = 26, counter =0, isDrawConsecutive = 0,  turns = 0;
+  var playerScore = 0, AIscore = 0, turnLimit = 26, counter =0, isDrawConsecutive = 0,  turns = 22;
   var score = document.getElementById("score");
   var poppedAICard = null, poppedPlayerCard = null;
   var checkMovedCard = true, continueAnimate = true;
@@ -28,6 +28,7 @@ app.controller('warCardGameController', function($scope, userInfo, $location, lo
   var x = 2;
   var y = 0;
   var z = 2;
+  var mainAnimation, loadingScreenAnimation;
   /************************************
   *           Check login
   **************************************/
@@ -39,6 +40,13 @@ app.controller('warCardGameController', function($scope, userInfo, $location, lo
   }
 
   score.innerHTML = "Click your pile to start!";
+
+  /************************************
+  *           ON LEAVING PAGE
+  **************************************/
+  $scope.$on('$locationChangeStart', function() {
+    window.location.reload();
+  });
 
   /********************************************************************
   *                            Function Calls
@@ -158,7 +166,7 @@ app.controller('warCardGameController', function($scope, userInfo, $location, lo
   };
   function renderFunction(){
     if(!loadedResources) {
-      requestAnimationFrame( renderFunction );
+      loadinScreenAnimation = requestAnimationFrame( renderFunction );
 
       loadingScreen.x.rotation.y += 0.05;
       loadingScreen.o.rotation.x += 0.05;
@@ -168,7 +176,7 @@ app.controller('warCardGameController', function($scope, userInfo, $location, lo
       renderer.render( loadingScreen.scene, loadingScreen.camera );
       return;
     }
-    requestAnimationFrame(renderFunction);
+    mainAnimation = requestAnimationFrame(renderFunction);
     Animations();
     renderer.render(scene, camera);
   }
