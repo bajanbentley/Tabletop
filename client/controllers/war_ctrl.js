@@ -86,10 +86,21 @@ app.controller('warCardGameController', function($scope, userInfo, $location, lo
   //Load a sound and set it as the Audio object's buffer
   audioLoader.load( 'sounds/cardPlace3.wav', function( buffer ) {
     sound.setBuffer( buffer );
-    sound.setVolume(0.5);
+    sound.setVolume(1);
 
   });
 
+  var bgmsound = new THREE.Audio( listener );
+
+  var bmgaudioLoader = new THREE.AudioLoader();
+
+  //Load a sound and set it as the Audio object's buffer
+  bmgaudioLoader.load( 'music/ambiance.mp3', function( buffer ) {
+    bgmsound.setBuffer( buffer );
+    bgmsound.setVolume(0.05);
+    bgmsound.setLoop(true);
+    bgmsound.play();
+  });
 
     function loadDeck(callback){
       return new Promise(function(resolve, reject){
