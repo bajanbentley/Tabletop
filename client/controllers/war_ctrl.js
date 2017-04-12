@@ -10,7 +10,7 @@ app.controller('warCardGameController', function($scope, userInfo, $location, lo
   var suite = ["spade","diamond","club","heart"];
   var x, o;
   var loadedResources = false;
-  var playerScore = 0, AIscore = 0, turnLimit = 26, counter =0, isDrawConsecutive = 0,  turns = 22;
+  var playerScore = 0, AIscore = 0, turnLimit = 26, counter =0, isDrawConsecutive = 0,  turns = 0;
   var score = document.getElementById("score");
   var poppedAICard = null, poppedPlayerCard = null;
   var checkMovedCard = true, continueAnimate = true;
