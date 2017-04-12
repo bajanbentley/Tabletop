@@ -4,9 +4,10 @@ app.controller('warCardGameController', function($scope, userInfo, $location, lo
   *                          Global Variables
   ********************************************************************/
   var scene, camera, renderer, render;
-  var loadingManager, myDeckLoader, tableLoader;
+  var loadingManager, myDeckLoader, tableLoader, myFaceLoader;
   var table, card, topCard;
   var cards = [], AIcards = [], humanCards = [], drawArray = [];
+  var suite = ["spade","diamond","club","heart"];
   var x, o;
   var loadedResources = false;
   var playerScore = 0, AIscore = 0, turnLimit = 26, counter =0, isDrawConsecutive = 0,  turns = 0;
@@ -19,9 +20,14 @@ app.controller('warCardGameController', function($scope, userInfo, $location, lo
   };
   var gameWon = false;
   var gameLost = false;
-  var GAMESPEED = 3000;
+  var GAMESPEED = 5000;
   var bobbing = 1;
   var gameFinished = false;
+  var nextCard = 0;
+  var heightIncrements = 0;
+  var x = 2;
+  var y = 0;
+  var z = 2;
   /************************************
   *           Check login
   **************************************/
@@ -41,11 +47,11 @@ app.controller('warCardGameController', function($scope, userInfo, $location, lo
   //add loaders
   loadingManager = new THREE.LoadingManager();
   myDeckLoader = new THREE.TextureLoader(loadingManager);
+  myFaceLoader = new THREE.TextureLoader(loadingManager);
   tableLoader = new THREE.TextureLoader(loadingManager);
   //load code
   tableLoader.load('images/wood4.png', loadTable);
   tableLoader.load('images/retard.png', loadDerp);
-  createDeck();
   //shuffleDeck();
 
   //Make o and x piece for loading screen
@@ -77,9 +83,29 @@ app.controller('warCardGameController', function($scope, userInfo, $location, lo
   });
 
 
+    function loadDeck(callback){
+      return new Promise(function(resolve, reject){
+        loadingManager.onLoad = doneLoading;
+        console.log(callback);
+        resolve("Complete Card Loading");
+      });
+    };
 
-  loadingManager.onLoad = doneLoading;
-  render = renderFunction();
+    function  loadRender (callback){
+      return new Promise(function(resolve, reject){
+        render = renderFunction();
+        resolve("render Scene");
+      });
+    };
+
+  createDeck().then(function(){
+    return loadDeck();
+  }).then(function(){
+    return loadRender();
+  }).then(function(){
+    console.log('Promis complete');
+  })
+
   //render();
 
   /********************************************************************
@@ -122,6 +148,7 @@ app.controller('warCardGameController', function($scope, userInfo, $location, lo
 
 
   var Animations = function(){
+    derp.position.y += bobbing;
     if (derp.position.y > 210){
       bobbing = -1;
     }
@@ -179,56 +206,68 @@ app.controller('warCardGameController', function($scope, userInfo, $location, lo
     scene.add( derp );
   }
 
+
+
   function createDeck(){
-    console.log("Version 0.11Derp");
-    var i = 0;
-    var nextCard = 0;
-    var heightIncrements = 0;
-    var x = 2;
-    var y = 0;
-    var z = 2;
-    var suite = ["diamond","club","heart","spade"];
+    return new Promise(function(resolve, reject) {
 
-    myDeckLoader.load('images/cardback.png', function ( cardBack ) {
-      cardback = new THREE.MeshBasicMaterial( { map: cardBack } );
-      for (i = 5; i < 57; i++) {
-        //this var x is weird...
+      console.log("Version 0.11Derp");
+      var i = 0;
 
-        nextCard = i;
-          myDeckLoader.load('images/' + nextCard + '.png', function ( face ) {
-            material = new THREE.MeshBasicMaterial( { map: face } );
-            var materials = [
-              new THREE.MeshBasicMaterial( { color: 0xffffff } ), // right
-              new THREE.MeshBasicMaterial( { color: 0xffffff } ), // left
-              cardback, // top
-              material, // bottom
-              new THREE.MeshBasicMaterial( { color: 0xffffff } ), // back
-              new THREE.MeshBasicMaterial( { color: 0xffffff } )  // front
-            ]
-            var cubeSidesMaterial = new THREE.MultiMaterial( materials );
-            var cubeGeometry = new THREE.BoxBufferGeometry( 300, 1, 400, 1, 1, 1 );
-            var newCard = new THREE.Mesh( cubeGeometry, cubeSidesMaterial );
-            newCard.position.y = heightIncrements;
-            newCard.position.x = 600;
-            newCard.position.z = 700;
-            heightIncrements += 2;
-            //console.log(x);
-            newCard.name = suite[y] +" of " + z;
-            newCard.value = z; // has to be 4.05, dont change
-            y+=1;
-            x+=1;
-            if(y == 4){
-              y = 0;
-              z += 1;
-            }
-            //console.log(newCard.name + " : " + newCard.value);
-            cards.push(newCard);
-          }); // end card loads
 
+
+      myDeckLoader.load('images/cardback.png', function ( cardBack ) {
+        cardback = new THREE.MeshBasicMaterial( { map: cardBack } );
+        for (i = 5; i < 57; i++) {
+          //this var x is weird...
+
+          nextCard = i;
+          addFace(nextCard);
+          if(nextCard > 55)
+          resolve('created Deck');
+        }
+      }); //end cardback load
+
+      console.log(nextCard);
+    });
+  };
+
+  function addFace(nextCard){
+    myFaceLoader.load('images/' + nextCard + '.png', function ( face ) {
+      material = new THREE.MeshBasicMaterial( { map: face } );
+      var materials = [
+        new THREE.MeshBasicMaterial( { color: 0xffffff } ), // right
+        new THREE.MeshBasicMaterial( { color: 0xffffff } ), // left
+        cardback, // top
+        material, // bottom
+        new THREE.MeshBasicMaterial( { color: 0xffffff } ), // back
+        new THREE.MeshBasicMaterial( { color: 0xffffff } )  // front
+      ]
+      var cubeSidesMaterial = new THREE.MultiMaterial( materials );
+      var cubeGeometry = new THREE.BoxBufferGeometry( 300, 1, 400, 1, 1, 1 );
+      var newCard = new THREE.Mesh( cubeGeometry, cubeSidesMaterial );
+      newCard.position.y = heightIncrements;
+      newCard.position.x = 600;
+      newCard.position.z = 700;
+      heightIncrements += 2;
+      //console.log(x);
+      var val = Math.floor(nextCard/4.01);
+      var suiteIndex = nextCard%4;
+      val++;
+      newCard.name = suite[suiteIndex] +" of " + val;
+      newCard.value = val; // has to be 4.05, dont change
+
+      y+=1;
+      x+=1;
+      if(y == 4){
+        y = 0;
+        z += 1;
       }
-    }); //end cardback load
-
-  }
+      console.log(newCard.name );
+      //console.log(newCard.name + " : " + newCard.value);
+      cards.push(newCard);
+    }); // end card loads
+  };
 
   /*********************************
   *     Set Loading Screen
@@ -297,6 +336,26 @@ app.controller('warCardGameController', function($scope, userInfo, $location, lo
       // calculate objects intersecting the picking ray
       var intersects = raycaster.intersectObjects( cards );
       //make sure it the card selected is drawable
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+      //checks for Victory
+
+
+
+
+
       if(gameLost==false && gameWon==false){
         gameFinished=false;
       }
@@ -304,15 +363,37 @@ app.controller('warCardGameController', function($scope, userInfo, $location, lo
         gameFinished=true;
       }
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
       if ( intersects.length > 0 && intersects[0].object.player=="Drawable" && checkMovedCard && gameLost==false && gameWon == false) {
           //console.log("Intersected: "+intersects[0].object.name+" Popped:"+ poppedPlayerCard.name);
           setTimeout(callSound,100);
           //PlayerCard
           poppedPlayerCard = humanCards.pop();
-          //console.log(poppedPlayerCard.value + "name: " + poppedPlayerCard.name);
+
           //AIPlayerCard
           poppedAICard = AIcards.pop();
-          //console.log(poppedAICard.value + "name: " + poppedAICard.name);
+          console.log(poppedAICard.value + "name: " + poppedAICard.name);
+          console.log(poppedPlayerCard.value + "name: " + poppedPlayerCard.name);
           //makes sure the card is no longer drawable
           poppedPlayerCard.player="Drawn";
 
@@ -334,6 +415,7 @@ app.controller('warCardGameController', function($scope, userInfo, $location, lo
             }
             //if game is a draw and we continue to animate
             else if ( poppedPlayerCard.value == poppedAICard.value && continueAnimate==true){
+              derp.position.y += bobbing;
               if (derp.position.y > 210){
                 bobbing = -2;
               }
@@ -394,6 +476,7 @@ app.controller('warCardGameController', function($scope, userInfo, $location, lo
             }
             //This part is for regular animations where draws are not involved.
             else{
+              derp.position.y += bobbing;
               if (derp.position.y > 210){
                 bobbing = -1;
               }
